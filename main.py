@@ -20,7 +20,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False)
 
 # Set device (CPU or GPU)
-device = torch.device("cuda" if torch.cuda.is_available() else "mps")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Create RoBERTa model instance
 model = RoBERTaModel(num_classes=2).to(device)
@@ -30,6 +30,7 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 
 for epoch in range(5):
     train_loss = model.train_epoch(train_dataloader, optimizer, device)
+    import pdb; pdb.set_trace()
     test_loss, test_accuracy = model.test_epoch(test_dataloader, device)
     
     print(f"Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}")
