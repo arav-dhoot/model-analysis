@@ -29,13 +29,12 @@ class RoBERTaModel(nn.Module):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['labels'].to(device)
-            
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
             loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
-            
+            print(f'Loss is {loss.item()}')
             total_loss += loss.item()
             
         return total_loss / len(dataloader)
