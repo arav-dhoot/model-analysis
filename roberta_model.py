@@ -55,7 +55,7 @@ class RoBERTaModel(nn.Module):
                 loss = self.get_loss(logits, labels)
                 
                 total_loss += loss.item()
-                
+                print(f'Loss is {loss.item()}')
                 _, predicted_labels = torch.max(logits, dim=1)
                 correct_predictions += (predicted_labels == labels).sum().item()
                 total_predictions += labels.size(0)
