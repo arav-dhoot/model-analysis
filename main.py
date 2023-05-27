@@ -29,7 +29,7 @@ model = RoBERTaModel(num_classes=2).to(device)
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 
 for epoch in range(5):
-    train_loss = model.train_epoch(train_dataloader, optimizer, device)
+    # train_loss = model.train_epoch(train_dataloader, optimizer, device)
     import pdb; pdb.set_trace()
     test_loss, test_accuracy = model.test_epoch(test_dataloader, device)
     
