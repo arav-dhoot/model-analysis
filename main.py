@@ -16,8 +16,8 @@ test_data = dataset['test']
 train_dataset = SST2Dataset(train_data, tokenizer)
 test_dataset = SST2Dataset(test_data, tokenizer)
 
-train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 # Set device (CPU or GPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
