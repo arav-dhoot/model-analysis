@@ -50,7 +50,7 @@ class RoBERTaModel(nn.Module):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 labels = batch['labels'].to(device)
-                
+                import pdb; pdb.set_trace()
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 
