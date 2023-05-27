@@ -11,7 +11,7 @@ tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 dataset = load_dataset('glue', 'sst2')
 
 train_data = dataset['train']
-test_data = dataset['test']
+test_data = dataset['validation']
 
 train_dataset = SST2Dataset(train_data, tokenizer)
 test_dataset = SST2Dataset(test_data, tokenizer)
