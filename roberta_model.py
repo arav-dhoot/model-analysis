@@ -4,14 +4,18 @@ from torch.utils.data import DataLoader
 from transformers import RobertaModel, RobertaTokenizer
 
 class RoBERTaModel(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, model='roberta-base', ):
         super(RoBERTaModel, self).__init__()
-        self.roberta = RobertaModel.from_pretrained('roberta-base')
+        self.model = RobertaModel.from_pretrained(model)
         self.dropout = nn.Dropout(0.1)
-        self.fc = nn.Linear(self.roberta.config.hidden_size, num_classes)
+        self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
+        self.name_list = [name for name, params in self.model.named_parameters()]
+        self.grad_dict = dict()
+        for name in self.name_list:
+            self.grad_dict[name] = list()
         
     def forward(self, input_ids, attention_mask):
-        outputs = self.roberta(input_ids=input_ids, attention_mask=attention_mask)
+        outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
         pooled_output = outputs.pooler_output
         pooled_output = self.dropout(pooled_output)
         logits = self.fc(pooled_output)

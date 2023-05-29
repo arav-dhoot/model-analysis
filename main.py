@@ -3,6 +3,7 @@ from transformers import RobertaTokenizer
 from roberta_model import RoBERTaModel
 from datasets import load_dataset
 import torch
+import wandb
 from torch.utils.data import DataLoader
 
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
@@ -29,8 +30,7 @@ model = RoBERTaModel(num_classes=2).to(device)
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 
 for epoch in range(5):
-    # train_loss = model.train_epoch(train_dataloader, optimizer, device)
-    import pdb; pdb.set_trace()
+    train_loss = model.train_epoch(train_dataloader, optimizer, device)
     test_loss, test_accuracy = model.test_epoch(test_dataloader, device)
     
     print(f"Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}")
