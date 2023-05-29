@@ -1,12 +1,12 @@
 from sst2dataset import SST2Dataset
-from transformers import RobertaTokenizer
+from transformers import AutoTokenizer
 from roberta_model import RoBERTaModel
 from datasets import load_dataset
 import torch
 import wandb
 from torch.utils.data import DataLoader
 
-tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
+tokenizer = AutoTokenizer.from_pretrained('roberta-base')
 
 # Load the SST-2 dataset
 dataset = load_dataset('glue', 'sst2')

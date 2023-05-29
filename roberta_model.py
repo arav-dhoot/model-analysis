@@ -1,12 +1,12 @@
+import json
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from transformers import RobertaModel, RobertaTokenizer
+from transformers import AutoModel
 
 class RoBERTaModel(nn.Module):
     def __init__(self, num_classes, model='roberta-base', ):
         super(RoBERTaModel, self).__init__()
-        self.model = RobertaModel.from_pretrained(model)
+        self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(0.1)
         self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
         self.name_list = [name for name, params in self.model.named_parameters()]
@@ -66,3 +66,37 @@ class RoBERTaModel(nn.Module):
         
         accuracy = correct_predictions / total_predictions
         return total_loss / len(dataloader), accuracy
+
+    def file_write(self):
+        file_name = f'{self.task}-data.json'
+        try:
+            file = open(file_name, 'x')
+            with open(file_name, 'w') as file:
+                json.dump(self.grad_dict, file, indent=4)
+        except:
+            with open(file_name, 'w') as file:
+                json.dump(self.grad_dict, file, indent=4)
+
+    def calculate_stats(self, var=True, mean=False, top_n=5):
+        if var:
+            var_dict = dict()
+            var_list = list()
+            for key in self.grad_dict.keys():
+                var_dict[key] = torch.var(torch.tensor(self.grad_dict[key])) 
+            var_dict = dict(sorted(var_dict.items(), key=lambda item: item[1]))
+            for item in list(reversed(var_dict.keys()))[:top_n]:
+                print(f'{item} => {var_dict[item]}')
+                var_list.append(var_dict[item])
+                if not mean: return var_list
+        if mean:
+            mean_dict = dict()
+            mean_list = list()
+            for key in self.grad_dict.keys():
+                mean_dict[key] = torch.mean(torch.tensor(self.grad_dict[key])) 
+            mean_dict = dict(sorted(mean_dict.items(), key=lambda item: item[1]))
+            for item in list(reversed(mean_dict.keys()))[:top_n]:
+                print(f'{item} => {mean_dict[item]}')
+                mean_list.append(mean_dict[item])
+                if not var: return mean_list
+        return var_list, mean_list
+        
