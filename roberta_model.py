@@ -4,7 +4,12 @@ import torch.nn as nn
 from transformers import AutoModel
 
 class RoBERTaModel(nn.Module):
-    def __init__(self, num_classes, model='roberta-base', ):
+    def __init__(self, 
+                 num_classes,
+                 model='roberta-base', 
+                 training_type='finetune',
+                 ):
+        
         super(RoBERTaModel, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(0.1)
@@ -14,19 +19,32 @@ class RoBERTaModel(nn.Module):
         for name in self.name_list:
             self.grad_dict[name] = list()
         
-    def forward(self, input_ids, attention_mask):
+    def forward(self, 
+                input_ids, 
+                attention_mask
+                ):
+        
         outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
         pooled_output = outputs.pooler_output
         pooled_output = self.dropout(pooled_output)
         logits = self.fc(pooled_output)
         return logits
 
-    def get_loss(self, logits, labels):
+    def get_loss(self, 
+                 logits, 
+                 labels
+                ):
+        
         criterion = nn.CrossEntropyLoss()
         loss = criterion(logits, labels)
         return loss
     
-    def train_epoch(self, dataloader, optimizer, device):
+    def train_epoch(self, 
+                    dataloader, 
+                    optimizer, 
+                    device
+                    ):
+        
         self.train()
         total_loss = 0.0
         for batch in dataloader:
@@ -43,7 +61,11 @@ class RoBERTaModel(nn.Module):
             
         return total_loss / len(dataloader)
     
-    def test_epoch(self, dataloader, device):
+    def test_epoch(self, 
+                   dataloader, 
+                   device
+                   ):
+        
         self.eval()
         total_loss = 0.0
         correct_predictions = 0
@@ -77,7 +99,12 @@ class RoBERTaModel(nn.Module):
             with open(file_name, 'w') as file:
                 json.dump(self.grad_dict, file, indent=4)
 
-    def calculate_stats(self, var=True, mean=False, top_n=5):
+    def calculate_stats(self, 
+                        var=True, 
+                        mean=False, 
+                        top_n=5
+                        ):
+        
         if var:
             var_dict = dict()
             var_list = list()
@@ -99,3 +126,14 @@ class RoBERTaModel(nn.Module):
                 mean_list.append(mean_dict[item])
                 if not var: return mean_list
         return var_list, mean_list
+    
+    def file_write(self):
+        file_name = f'{self.task}-data.json'
+        try:
+            file = open(file_name, 'x')
+            with open(file_name, 'w') as file:
+                json.dump(self.grad_dict, file, indent=4)
+        except:
+            with open(file_name, 'w') as file:
+                json.dump(self.grad_dict, file, indent=4)
+        

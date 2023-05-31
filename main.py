@@ -36,7 +36,6 @@ if experiment == 'qqp':
     train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 
-
 # Set device (CPU or GPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
