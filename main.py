@@ -7,18 +7,21 @@ import wandb
 from torch.utils.data import DataLoader
 
 tokenizer = AutoTokenizer.from_pretrained('roberta-base')
+experiment = 'sst2'
 
-# Load the SST-2 dataset
-dataset = load_dataset('glue', 'sst2')
+if experiment == 'sst2':
+    dataset = load_dataset('glue', 'sst2')
 
-train_data = dataset['train']
-test_data = dataset['validation']
+    train_data = dataset['train']
+    test_data = dataset['validation']
 
-train_dataset = SST2Dataset(train_data, tokenizer)
-test_dataset = SST2Dataset(test_data, tokenizer)
+    train_dataset = SST2Dataset(train_data, tokenizer)
+    test_dataset = SST2Dataset(test_data, tokenizer)
 
-train_dataloader = DataLoader(train_dataset, batch_size=180, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=180, shuffle=False)
+    train_dataloader = DataLoader(train_dataset, batch_size=180, shuffle=True)
+    test_dataloader = DataLoader(test_dataset, batch_size=180, shuffle=False)
+
+
 
 # Set device (CPU or GPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
