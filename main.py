@@ -1,5 +1,5 @@
 from transformers import AutoTokenizer
-from roberta_model import RoBERTaModel
+from model import Model
 from datasets import load_dataset
 import torch
 import wandb
@@ -40,7 +40,7 @@ if experiment == 'qqp':
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Create RoBERTa model instance
-model = RoBERTaModel(num_classes=2).to(device)
+model = Model(num_classes=2).to(device)
 
 # Training loop
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)

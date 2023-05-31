@@ -3,14 +3,14 @@ import torch
 import torch.nn as nn
 from transformers import AutoModel
 
-class RoBERTaModel(nn.Module):
+class Model(nn.Module):
     def __init__(self, 
                  num_classes,
                  model='roberta-base', 
                  training_type='finetune',
                  ):
         
-        super(RoBERTaModel, self).__init__()
+        super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(0.1)
         self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
@@ -125,15 +125,4 @@ class RoBERTaModel(nn.Module):
                 print(f'{item} => {mean_dict[item]}')
                 mean_list.append(mean_dict[item])
                 if not var: return mean_list
-        return var_list, mean_list
-    
-    def file_write(self):
-        file_name = f'{self.task}-data.json'
-        try:
-            file = open(file_name, 'x')
-            with open(file_name, 'w') as file:
-                json.dump(self.grad_dict, file, indent=4)
-        except:
-            with open(file_name, 'w') as file:
-                json.dump(self.grad_dict, file, indent=4)
-        
+        return var_list, mean_list        
