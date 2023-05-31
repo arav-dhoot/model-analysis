@@ -99,4 +99,3 @@ class RoBERTaModel(nn.Module):
                 mean_list.append(mean_dict[item])
                 if not var: return mean_list
         return var_list, mean_list
-        

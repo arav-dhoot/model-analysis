@@ -1,4 +1,3 @@
-from sst2dataset import SST2Dataset
 from transformers import AutoTokenizer
 from roberta_model import RoBERTaModel
 from datasets import load_dataset
@@ -10,6 +9,8 @@ tokenizer = AutoTokenizer.from_pretrained('roberta-base')
 experiment = 'sst2'
 
 if experiment == 'sst2':
+    from sst2dataset import SST2Dataset
+
     dataset = load_dataset('glue', 'sst2')
 
     train_data = dataset['train']
@@ -21,6 +22,19 @@ if experiment == 'sst2':
     train_dataloader = DataLoader(train_dataset, batch_size=180, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=180, shuffle=False)
 
+if experiment == 'qqp':
+    from qqpdataset import QQPDataset
+
+    dataset = load_dataset("glue", "qqp")
+
+    train_data = dataset['train']
+    test_data = dataset['validation']
+
+    train_dataset = SST2Dataset(train_data, tokenizer)
+    test_dataset = SST2Dataset(test_data, tokenizer)
+
+    train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 
 
 # Set device (CPU or GPU)
