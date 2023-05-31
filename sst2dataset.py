@@ -1,6 +1,5 @@
 from torch.utils.data import Dataset
 
-# Create a custom dataset class for SST-2
 class SST2Dataset(Dataset):
     def __init__(self, data, tokenizer, max_length=128):
         self.data = data
