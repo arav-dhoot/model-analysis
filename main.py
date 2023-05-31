@@ -9,7 +9,7 @@ tokenizer = AutoTokenizer.from_pretrained('roberta-base')
 experiment = 'sst2'
 
 if experiment == 'sst2':
-    from sst2dataset import SST2Dataset
+    from dataset.sst2dataset import SST2Dataset
 
     dataset = load_dataset('glue', 'sst2')
 
@@ -23,7 +23,7 @@ if experiment == 'sst2':
     test_dataloader = DataLoader(test_dataset, batch_size=180, shuffle=False)
 
 if experiment == 'qqp':
-    from qqpdataset import QQPDataset
+    from dataset.qqpdataset import QQPDataset
 
     dataset = load_dataset("glue", "qqp")
 
