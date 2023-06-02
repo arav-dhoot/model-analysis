@@ -1,4 +1,6 @@
 import json
+import tqdm
+import time
 import torch
 import numpy as np
 import torch.nn as nn
@@ -7,9 +9,10 @@ from transformers import AutoModel
 class Model(nn.Module):
     def __init__(self, 
                  num_classes,
+                 task,
                  model='roberta-base', 
                  training_type='frozen',
-                 task='sst2'):
+                ):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
@@ -92,17 +95,24 @@ class Model(nn.Module):
         
         self.train()
         total_loss = 0.0
-        for batch in dataloader:
+        total_correct = 0
+        batch_count = 0 
+        start_time = time.time() 
+        
+        for batch in tqdm(dataloader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['labels'].to(device)
+            
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
             loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
-            print(f'Loss is {loss.item()}')
+            
             total_loss += loss.item()
+            predicted_labels = torch.argmax(logits, dim=1)
+            total_correct += (predicted_labels == labels).sum().item()  
             
             counter = 0
             for name, param in self.model.named_parameters():
@@ -111,8 +121,14 @@ class Model(nn.Module):
                 elif param.grad is not None and counter % 3 == 0:
                     self.grad_dict[name].append(round(torch.norm(param.grad).item(), 3))
             counter += 1 
+
+            batch_count += 1
             
-        return total_loss / len(dataloader)
+        accuracy = total_correct / len(dataloader.dataset)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        
+        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count
     
     def test_epoch(self, 
                    dataloader, 
@@ -121,11 +137,13 @@ class Model(nn.Module):
         
         self.eval()
         total_loss = 0.0
-        correct_predictions = 0
+        total_correct = 0
         total_predictions = 0
+        batch_count = 0
+        start_time = time.time()
         
         with torch.no_grad():
-            for batch in dataloader:
+            for batch in tqdm(dataloader):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 labels = batch['labels'].to(device)
@@ -136,11 +154,16 @@ class Model(nn.Module):
                 total_loss += loss.item()
                 print(f'Loss is {loss.item()}')
                 _, predicted_labels = torch.max(logits, dim=1)
-                correct_predictions += (predicted_labels == labels).sum().item()
+                total_correct += (predicted_labels == labels).sum().item()
                 total_predictions += labels.size(0)
-        
-        accuracy = correct_predictions / total_predictions
-        return total_loss / len(dataloader), accuracy
+
+                batch_count += 1
+                
+        accuracy = total_correct / total_predictions
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+
+        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count
 
     def file_write(self):
         file_name = f'/json_files/{self.task}-data.json'
