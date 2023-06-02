@@ -38,7 +38,6 @@ if task == 'sst2':
 
     dataset = load_dataset('glue', 'sst2')
     num_classes = 2
-    task = 'sst2'
 
     train_data = dataset['train']
     test_data = dataset['validation']
@@ -54,7 +53,6 @@ if task == 'qqp':
 
     dataset = load_dataset('glue', 'qqp')
     num_classes = 2
-    task = 'qqp'
 
     train_data = dataset['train']
     test_data = dataset['validation']
