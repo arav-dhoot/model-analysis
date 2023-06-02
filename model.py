@@ -1,5 +1,6 @@
 import json
 import torch
+import numpy as np
 import torch.nn as nn
 from transformers import AutoModel
 
@@ -7,8 +8,8 @@ class Model(nn.Module):
     def __init__(self, 
                  num_classes,
                  model='roberta-base', 
-                 training_type='finetune',
-                 ):
+                 training_type='frozen',
+                 task='sst2'):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
@@ -16,8 +17,52 @@ class Model(nn.Module):
         self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
         self.name_list = [name for name, params in self.model.named_parameters()]
         self.grad_dict = dict()
-        for name in self.name_list:
-            self.grad_dict[name] = list()
+        for name in self.name_list: self.grad_dict[name] = list()
+        self.training_type = training_type
+        self.task = task
+        self.trainable_params = 0
+        for name, param in self.model.named_parameters(): self.trainable_params += torch.numel(param)
+        self.trained_parameters = 0
+        self.trained_proportion = None    
+
+        if self.training_type == 'finetune':
+            for name, param in self.model.named_parameters():
+                param.requires_grad = True
+            self.trained_proportion = 1
+        
+        elif self.training_type == 'frozen':
+            for name, param in self.model.named_parameters():
+                if 'embeddings' in name or 'pooler' in name:
+                    param.requires_grad = True
+                    self.trained_parameters += torch.numel(param)
+                else: param.requires_grad = False
+            self.trained_proportion - self.trained_parameters/self.trained_parameters
+
+        elif self.training_type == 'optimized':
+            path = '/json_files/'+task+'-data.json' 
+            with open(path) as file: self.grad_dict = json.load(file)
+            var_dict = dict()
+            for key in self.grad_dict.keys(): var_dict[key] = torch.var(torch.tensor(self.grad_dict[key]))
+            sorted_var_dict = dict(sorted(var_dict.items(), key=lambda x: x[1]))
+            key_list, value_list = [], []
+            for key, value in sorted_var_dict.items():
+                value_list.append(value)
+                key_list.append(key)
+            value_list = np.array(np.delete(value_list,0))
+            key_list = key_list[1:]
+            counter=0
+            cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list))
+            for value in cumulative_list:
+                if value > 0.01: break
+                else: counter+=1
+            value=counter-1
+
+            for name, param in self.model.named_parameters():
+                for key in key_list[value:]: 
+                    if name in key:
+                        param.requires_grad = True
+                        self.trained_parameters += torch.numel(param)
+                    else: param.requires_grad = False
         
     def forward(self, 
                 input_ids, 
@@ -59,6 +104,14 @@ class Model(nn.Module):
             print(f'Loss is {loss.item()}')
             total_loss += loss.item()
             
+            counter = 0
+            for name, param in self.model.named_parameters():
+                if param.grad is None:
+                    continue
+                elif param.grad is not None and counter % 3 == 0:
+                    self.grad_dict[name].append(round(torch.norm(param.grad).item(), 3))
+            counter += 1 
+            
         return total_loss / len(dataloader)
     
     def test_epoch(self, 
@@ -90,7 +143,7 @@ class Model(nn.Module):
         return total_loss / len(dataloader), accuracy
 
     def file_write(self):
-        file_name = f'{self.task}-data.json'
+        file_name = f'/json_files/{self.task}-data.json'
         try:
             file = open(file_name, 'x')
             with open(file_name, 'w') as file:
