@@ -174,6 +174,7 @@ class Model(nn.Module):
         except:
             with open(file_name, 'w') as file:
                 json.dump(self.grad_dict, file, indent=4)
+        return file_name
 
     def calculate_stats(self, 
                         var=True, 
