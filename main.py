@@ -74,7 +74,6 @@ def run_experiment (
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     wandb.watch(model, log='all')
 
-    print(f'{model.trained_proportion * 100}% of the model was trained')
     for epoch in range(epochs):
         train_loss, train_accuracy, train_time_per_batch = model.train_epoch(train_dataloader, optimizer, device)
         test_loss, test_accuracy, test_time_per_batch = model.test_epoch(test_dataloader, device)
@@ -92,7 +91,8 @@ def run_experiment (
         )
         
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
-    
+    print(f'{model.trained_proportion * 100}% of the model was trained')
+
     if training_type == 'finetuned': 
         file_location = model.file_write()
         wandb.save(file_location)

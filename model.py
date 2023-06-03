@@ -25,7 +25,8 @@ class Model(nn.Module):
         self.task = task
         self.trainable_params = 0
         for name, param in self.model.named_parameters(): self.trainable_params += torch.numel(param)
-        self.trained_parameters = 0 
+        self.trained_parameters = 0
+        self.trained_proportion = 0 
 
         if self.training_type == 'finetune':
             for name, param in self.model.named_parameters():
