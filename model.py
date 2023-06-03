@@ -42,7 +42,7 @@ class Model(nn.Module):
             self.trained_proportion = self.trained_parameters/self.trained_parameters
 
         elif self.training_type == 'optimized':
-            path = '/json_files/'+task+'-data.json' 
+            path = task+'-data.json' 
             with open(path) as file: self.grad_dict = json.load(file)
             var_dict = dict()
             for key in self.grad_dict.keys(): var_dict[key] = torch.var(torch.tensor(self.grad_dict[key]))
@@ -164,7 +164,7 @@ class Model(nn.Module):
         return total_loss / len(dataloader), accuracy, elapsed_time/batch_count
 
     def file_write(self):
-        file_name = f'/json_files/{self.task}-data.json'
+        file_name = f'{self.task}-data.json'
         try:
             file = open(file_name, 'x')
             with open(file_name, 'w') as file:
