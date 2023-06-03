@@ -122,7 +122,7 @@ class Model(nn.Module):
             for name, param in self.model.named_parameters():
                 if param.grad is None:
                     continue
-                elif param.grad is not None and counter % 3 == 0:
+                elif param.grad is not None:
                     self.grad_dict[name].append(round(torch.norm(param.grad).item(), 3))
             counter += 1 
 
