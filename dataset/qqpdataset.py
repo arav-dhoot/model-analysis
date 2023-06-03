@@ -2,19 +2,18 @@ import torch
 from torch.utils.data import Dataset
 
 class QQPDataset(Dataset):
-    def __init__(self, questions, labels, tokenizer, max_length=128):
-        self.questions = questions
-        self.labels = labels
+    def __init__(self, data, tokenizer, max_length=128):
+        self.data
         self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
-        return len(self.questions)
+        return len(self.data)
 
     def __getitem__(self, index):
-        question1 = str(self.questions[index][0])
-        question2 = str(self.questions[index][1])
-        label = self.labels[index]
+        question1 = str(self.data[index][0])
+        question2 = str(self.data[index][1])
+        label = self.data[index][2]
 
         encoding = self.tokenizer.encode_plus(
             question1,
