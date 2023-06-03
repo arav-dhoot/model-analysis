@@ -73,7 +73,7 @@ def run_experiment (
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     model = Model(num_classes=num_classes, task=task, training_type='frozen').to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     wandb.watch(model, log='all')
 
     print(f'{model.trained_proportion * 100}% of the model was trained')
