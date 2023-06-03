@@ -16,8 +16,11 @@ class Model(nn.Module):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
-        self.dropout = nn.Dropout(0.1)
-        self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
+        self.fc = nn.Sequential(
+            nn.Linear(self.model.config.hidden_size, self.model.config.hidden_size),
+            nn.GELU(),
+            nn.Linear(self.model.config.hidden_size, num_classes)
+            )
         self.name_list = [name for name, params in self.model.named_parameters()]
         self.grad_dict = dict()
         for name in self.name_list: self.grad_dict[name] = list()
@@ -49,10 +52,9 @@ class Model(nn.Module):
             sorted_var_dict = dict(sorted(var_dict.items(), key=lambda x: x[1]))
             key_list, value_list = [], []
             for key, value in sorted_var_dict.items():
-                value_list.append(value)
+                value_list.append(value) 
                 key_list.append(key)
             value_list = np.array(np.delete(value_list,0))
-            key_list = key_list[1:]
             counter=0
             cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list))
             for value in cumulative_list:
@@ -102,6 +104,8 @@ class Model(nn.Module):
         total_correct = 0
         batch_count = 0 
         start_time = time.time() 
+        loss_list = list()
+        accuracy_list = list()
         
         for batch in tqdm.tqdm(dataloader):
             input_ids = batch['input_ids'].to(device)
@@ -115,8 +119,10 @@ class Model(nn.Module):
             optimizer.step()
             
             total_loss += loss.item()
+            loss_list.append(loss.item())
             predicted_labels = torch.argmax(logits, dim=1)
             total_correct += (predicted_labels == labels).sum().item()  
+            accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
             
             counter = 0
             for name, param in self.model.named_parameters():
@@ -132,7 +138,7 @@ class Model(nn.Module):
         end_time = time.time()
         elapsed_time = end_time - start_time
         
-        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count
+        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count, loss_list, accuracy_list
     
     def test_epoch(self, 
                    dataloader, 
@@ -145,6 +151,8 @@ class Model(nn.Module):
         total_predictions = 0
         batch_count = 0
         start_time = time.time()
+        loss_list = list()
+        accuracy_list = list()
         
         with torch.no_grad():
             for batch in tqdm.tqdm(dataloader):
@@ -155,8 +163,10 @@ class Model(nn.Module):
                 loss = self.get_loss(logits, labels)
                 
                 total_loss += loss.item()
+                loss_list.append(loss.item())
                 _, predicted_labels = torch.max(logits, dim=1)
                 total_correct += (predicted_labels == labels).sum().item()
+                accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
                 total_predictions += labels.size(0)
 
                 batch_count += 1
@@ -165,7 +175,7 @@ class Model(nn.Module):
         end_time = time.time()
         elapsed_time = end_time - start_time
 
-        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count
+        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count, loss_list, accuracy_list
 
     def file_write(self):
         file_name = f'{self.task}-data.json'

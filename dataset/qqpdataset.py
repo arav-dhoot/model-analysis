@@ -15,7 +15,7 @@ class QQPDataset(Dataset):
 
         question1 = str(example["question1"])
         question2 = str(example["question2"])
-        label = example["label"]  # Update this line with the correct key for labels
+        label = example["label"]  
 
         encoding = self.tokenizer.encode_plus(
             question1,

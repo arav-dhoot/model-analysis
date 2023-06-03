@@ -73,21 +73,21 @@ def run_experiment (
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_time_per_batch = model.train_epoch(train_dataloader, optimizer, device)
-        test_loss, test_accuracy, test_time_per_batch = model.test_epoch(test_dataloader, device)
+        train_loss, train_accuracy, train_time_per_batch, train_loss_list, train_accuracy_list = model.train_epoch(train_dataloader, optimizer, device)
+        test_loss, test_accuracy, test_time_per_batch, test_loss_list, test_accuracy_list = model.test_epoch(test_dataloader, device)
 
         wandb.log(
             {
                 'Epoch':epoch,
-                'Train Loss':train_loss,
-                'Train Accuracy':train_accuracy,
+                'Train Loss':train_loss_list,
+                'Train Accuracy':train_accuracy_list,
                 'Train Time':train_time_per_batch,
-                'Test Loss':test_loss,
-                'Test Accuracy':test_accuracy,
+                'Test Loss':test_loss_list,
+                'Test Accuracy':test_accuracy_list,
                 'Test Time':test_time_per_batch
             }
         )
