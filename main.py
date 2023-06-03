@@ -13,6 +13,7 @@ def run_experiment (
         training_type,
         epochs, 
         log_to_wandb,
+        learning_rate
 ):
 
     tokenizer = AutoTokenizer.from_pretrained(model)
@@ -20,6 +21,7 @@ def run_experiment (
     training_type = training_type
     log_to_wandb = log_to_wandb
     epochs = epochs
+    learning_rate = learning_rate
 
     short_name = str(random.randint(int(1e5), int(1e6) - 1))
     run_name = f'{task}-{training_type}-{short_name}'
@@ -31,7 +33,7 @@ def run_experiment (
             task=task,
             training_type=training_type,
             epochs=epochs,
-            learning_rate='1e-5'
+            learning_rate=learning_rate
         )
 
         wandb.init(
@@ -71,7 +73,7 @@ def run_experiment (
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
