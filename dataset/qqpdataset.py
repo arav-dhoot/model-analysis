@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 
 class QQPDataset(Dataset):
     def __init__(self, data, tokenizer, max_length=128):
-        self.data
+        self.data = data
         self.tokenizer = tokenizer
         self.max_length = max_length
 
