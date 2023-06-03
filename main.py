@@ -48,7 +48,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'sst2')
         num_classes = 2
-        batch_size = 180
+        batch_size = 400
 
         train_data = dataset['train']
         test_data = dataset['validation']
