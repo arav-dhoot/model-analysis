@@ -1,0 +1,8 @@
+git config --global user.name "Arav Dhoot"
+git config --global user.email "aravdhoot@gmail.com"
+pip install wandb==0.15.0 tqdm transformers datasets torch numpy protobuf==3.20.0
+
+python run.py > log.log 2>&1 &
+tail -f log.log 
+ps -ef | grep python
+kill -9 [PID of the process]
