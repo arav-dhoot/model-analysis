@@ -11,9 +11,11 @@ class QQPDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        question1 = str(self.data[index][0])
-        question2 = str(self.data[index][1])
-        label = self.data[index][2]
+        example = self.data[index]
+
+        question1 = str(example["question1"])
+        question2 = str(example["question2"])
+        label = example["label"]
 
         encoding = self.tokenizer.encode_plus(
             question1,
