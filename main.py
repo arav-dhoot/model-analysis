@@ -50,7 +50,6 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-
         train_dataset = SST2Dataset(train_data, tokenizer)
         test_dataset = SST2Dataset(test_data, tokenizer)
 
@@ -63,7 +62,6 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-
         train_dataset = QQPDataset(train_data, tokenizer)
         test_dataset = QQPDataset(test_data, tokenizer)
 
@@ -72,7 +70,7 @@ def run_experiment (
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    model = Model(num_classes=num_classes, task=task, training_type='frozen').to(device)
+    model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     wandb.watch(model, log='all')
 

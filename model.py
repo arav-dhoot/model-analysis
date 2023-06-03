@@ -10,8 +10,8 @@ class Model(nn.Module):
     def __init__(self, 
                  num_classes,
                  task,
+                 training_type,
                  model='roberta-base', 
-                 training_type='frozen',
                 ):
         
         super(Model, self).__init__()
@@ -39,7 +39,7 @@ class Model(nn.Module):
                     param.requires_grad = True
                     self.trained_parameters += torch.numel(param)
                 else: param.requires_grad = False
-            self.trained_proportion = self.trained_parameters/self.trained_parameters
+            self.trained_proportion = self.trained_parameters/self.trainable_params
 
         elif self.training_type == 'optimized':
             path = task+'-data.json' 
@@ -66,6 +66,7 @@ class Model(nn.Module):
                         param.requires_grad = True
                         self.trained_parameters += torch.numel(param)
                     else: param.requires_grad = False
+            self.trained_proportion = self.trained_parameters/self.trainable_params
         
     def forward(self, 
                 input_ids, 
