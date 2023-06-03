@@ -106,7 +106,7 @@ class Model(nn.Module):
         for batch in tqdm.tqdm(dataloader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
-            labels = batch['labels'].to(device)
+            labels = batch['label'].to(device)
             
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
@@ -150,7 +150,7 @@ class Model(nn.Module):
             for batch in tqdm.tqdm(dataloader):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
-                labels = batch['labels'].to(device)
+                labels = batch['label'].to(device)
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 
