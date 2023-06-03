@@ -147,12 +147,10 @@ class Model(nn.Module):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 labels = batch['labels'].to(device)
-                import pdb; pdb.set_trace()
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 
                 total_loss += loss.item()
-                print(f'Loss is {loss.item()}')
                 _, predicted_labels = torch.max(logits, dim=1)
                 total_correct += (predicted_labels == labels).sum().item()
                 total_predictions += labels.size(0)
