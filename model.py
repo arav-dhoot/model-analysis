@@ -39,7 +39,7 @@ class Model(nn.Module):
                     param.requires_grad = True
                     self.trained_parameters += torch.numel(param)
                 else: param.requires_grad = False
-            self.trained_proportion - self.trained_parameters/self.trained_parameters
+            self.trained_proportion = self.trained_parameters/self.trained_parameters
 
         elif self.training_type == 'optimized':
             path = '/json_files/'+task+'-data.json' 
@@ -99,7 +99,7 @@ class Model(nn.Module):
         batch_count = 0 
         start_time = time.time() 
         
-        for batch in tqdm(dataloader):
+        for batch in tqdm.tqdm(dataloader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['labels'].to(device)
@@ -143,7 +143,7 @@ class Model(nn.Module):
         start_time = time.time()
         
         with torch.no_grad():
-            for batch in tqdm(dataloader):
+            for batch in tqdm.tqdm(dataloader):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 labels = batch['labels'].to(device)
