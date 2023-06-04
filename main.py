@@ -95,7 +95,7 @@ def run_experiment (
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    device = torch.device('cpu' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
