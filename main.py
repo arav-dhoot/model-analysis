@@ -79,6 +79,19 @@ def run_experiment (
         train_dataset = COLADataset(train_data, tokenizer)
         test_dataset = COLADataset(test_dataset, tokenizer)
 
+    if task == 'wnli':
+        from dataset.wnlidataset import WNLIDataset
+
+        dataset = load_dataset('glue', 'wnli')
+        num_classes = 2
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = WNLIDataset(train_data, tokenizer)
+        test_dataset = WNLIDataset(test_dataset, tokenizer)
+
+
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
