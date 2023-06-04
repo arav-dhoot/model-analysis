@@ -16,13 +16,12 @@ class Model(nn.Module):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
-        # self.dropout = nn.Dropout(0.1).to(torch.device('cuda'))
-        #  self.fc = nn.Sequential(
-        #     nn.Linear(self.model.config.hidden_size, self.model.config.hidden_size),
-        #     nn.GELU(),
-        #     nn.Linear(self.model.config.hidden_size, num_classes)
-        #     )
-        self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
+        self.fc = nn.Sequential(
+            nn.Linear(self.model.config.hidden_size, self.model.config.hidden_size),
+            nn.GELU(),
+            nn.Linear(self.model.config.hidden_size, num_classes)
+            )
+        # self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
         self.name_list = [name for name, params in self.model.named_parameters()]
         self.grad_dict = dict()
         for name in self.name_list: self.grad_dict[name] = list()
