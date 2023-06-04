@@ -103,11 +103,12 @@ class Model(nn.Module):
         total_loss = 0.0
         total_correct = 0
         batch_count = 0 
-        start_time = time.time() 
+        time_list = list()
         loss_list = list()
         accuracy_list = list()
         
         for batch in tqdm.tqdm(dataloader):
+            start_time = time.time()
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             if self.task == 'qqp': labels = batch['label'].to(device) 
@@ -125,21 +126,18 @@ class Model(nn.Module):
             total_correct += (predicted_labels == labels).sum().item()  
             accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
             
-            counter = 0
             for name, param in self.model.named_parameters():
                 if param.grad is None:
                     continue
                 elif param.grad is not None:
                     self.grad_dict[name].append(round(torch.norm(param.grad).item(), 3))
-            counter += 1 
-
             batch_count += 1
-            
+            end_time = time.time()
+            time_list.append(end_time - start_time)
+
         accuracy = total_correct / len(dataloader.dataset)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
         
-        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count, loss_list, accuracy_list
+        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_count
     
     def test_epoch(self, 
                    dataloader, 
@@ -151,12 +149,13 @@ class Model(nn.Module):
         total_correct = 0
         total_predictions = 0
         batch_count = 0
-        start_time = time.time()
+        time_list = list()
         loss_list = list()
         accuracy_list = list()
         
         with torch.no_grad():
             for batch in tqdm.tqdm(dataloader):
+                start_time = time.time()
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 if self.task == 'qqp': labels = batch['label'].to(device) 
@@ -170,14 +169,13 @@ class Model(nn.Module):
                 total_correct += (predicted_labels == labels).sum().item()
                 accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
                 total_predictions += labels.size(0)
-
                 batch_count += 1
+                end_time = time.time()
+                time_list.append(end_time - start_time)
                 
         accuracy = total_correct / total_predictions
-        end_time = time.time()
-        elapsed_time = end_time - start_time
 
-        return total_loss / len(dataloader), accuracy, elapsed_time/batch_count, loss_list, accuracy_list
+        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_count
 
     def file_write(self):
         file_name = f'{self.task}-data.json'
