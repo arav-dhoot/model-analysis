@@ -16,7 +16,7 @@ class Model(nn.Module):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(0.1).to(torch.device('cuda'))
         self.fc = nn.Sequential(
             nn.Linear(self.model.config.hidden_size, self.model.config.hidden_size),
             nn.GELU(),
