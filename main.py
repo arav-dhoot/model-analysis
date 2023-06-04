@@ -105,16 +105,17 @@ def run_experiment (
         train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_batch_count = model.train_epoch(train_dataloader, optimizer, device)
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_batch_count = model.test_epoch(test_dataloader, device)
 
-        wandb.log(
-            {
-                'Train Loss':train_loss_list,
-                'Train Accuracy':train_accuracy_list,
-                'Train Time':train_time_list,
-                'Test Loss':test_loss_list,
-                'Test Accuracy':test_accuracy_list,
-                'Test Time':test_time_list
-            }
-        )
+        for tr_loss, tr_accuracy, tr_time, te_loss, te_accuracy, te_time in zip(train_loss_list, train_accuracy_list, train_time_list, test_loss_list, test_accuracy_list, test_time_list):
+            wandb.log(
+                {
+                    'Train Loss':tr_loss,
+                    'Train Accuracy':tr_accuracy,
+                    'Train Time':tr_time,
+                    'Test Loss':te_loss,
+                    'Test Accuracy':te_accuracy,
+                    'Test Time':te_time
+                }
+            )
         
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
