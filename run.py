@@ -20,7 +20,6 @@ parser.add_argument(
 parser.add_argument(
     '--log_to_wandb',
     default=True
-    type=bool
 )
 parser.add_argument(
     '--lr',
