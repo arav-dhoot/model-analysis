@@ -77,7 +77,7 @@ def run_experiment (
         train_data = dataset['train']
         test_data = dataset['validation']
         train_dataset = COLADataset(train_data, tokenizer)
-        test_dataset = COLADataset(test_dataset, tokenizer)
+        test_dataset = COLADataset(test_data, tokenizer)
 
     if task == 'wnli':
         from dataset.wnlidataset import WNLIDataset
