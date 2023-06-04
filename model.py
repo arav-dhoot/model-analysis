@@ -110,7 +110,7 @@ class Model(nn.Module):
         for batch in tqdm.tqdm(dataloader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
-            if self.task != 'sst2':
+            if self.task != 'sst2' or self.task != 'wnli':
                 labels = batch['label'].to(device) 
             else: labels = batch['labels'].to(device)
             
@@ -160,7 +160,7 @@ class Model(nn.Module):
             for batch in tqdm.tqdm(dataloader):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
-                if self.task != 'sst2':
+                if self.task != 'sst2' or self.task != 'wnli':
                     labels = batch['label'].to(device) 
                 else: labels = batch['labels'].to(device)
                 logits = self.forward(input_ids, attention_mask)
