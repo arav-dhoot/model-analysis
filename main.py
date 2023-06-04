@@ -102,18 +102,17 @@ def run_experiment (
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_time_per_batch, train_loss_list, train_accuracy_list = model.train_epoch(train_dataloader, optimizer, device)
-        test_loss, test_accuracy, test_time_per_batch, test_loss_list, test_accuracy_list = model.test_epoch(test_dataloader, device)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_batch_count = model.train_epoch(train_dataloader, optimizer, device)
+        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_batch_count = model.test_epoch(test_dataloader, device)
 
         wandb.log(
             {
-                'Epoch':epoch,
                 'Train Loss':train_loss_list,
                 'Train Accuracy':train_accuracy_list,
-                'Train Time':train_time_per_batch,
+                'Train Time':train_time_list,
                 'Test Loss':test_loss_list,
                 'Test Accuracy':test_accuracy_list,
-                'Test Time':test_time_per_batch
+                'Test Time':test_time_list
             }
         )
         
