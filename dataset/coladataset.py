@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 
-class SST2Dataset(Dataset):
+class COLADataset(Dataset):
     def __init__(self, data, tokenizer, max_length=128):
         self.data = data
         self.tokenizer = tokenizer

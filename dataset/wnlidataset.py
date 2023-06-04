@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 
-class SST2Dataset(Dataset):
+class WNLIDataset(Dataset):
     def __init__(self, data, tokenizer, max_length=128):
         self.data = data
         self.tokenizer = tokenizer
@@ -11,11 +11,13 @@ class SST2Dataset(Dataset):
         return len(self.data)
     
     def __getitem__(self, index):
-        text = self.data[index]['sentence']
+        sentence1 = self.data[index]['sentence1']
+        sentence2 = self.data[index]['sentence2']
         label = self.data[index]['label']
         
         encoding = self.tokenizer.encode_plus(
-            text,
+            sentence1,
+            sentence2,
             add_special_tokens=True,
             truncation=True,
             max_length=self.max_length,

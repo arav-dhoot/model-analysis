@@ -48,7 +48,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'sst2')
         num_classes = 2
-        batch_size = 400
+        batch_size = 16
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -60,12 +60,24 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'qqp')
         num_classes = 2
-        batch_size = 350
+        batch_size = 16
 
         train_data = dataset['train']
         test_data = dataset['validation']
         train_dataset = QQPDataset(train_data, tokenizer)
         test_dataset = QQPDataset(test_data, tokenizer)
+
+    if task == 'cola':
+        from dataset.coladataset import COLADataset
+
+        dataset = load_dataset('glue', 'cola')
+        num_classes = 2
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = COLADataset(train_data, tokenizer)
+        test_dataset = COLADataset(test_dataset, tokenizer)
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
