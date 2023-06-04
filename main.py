@@ -89,7 +89,7 @@ def run_experiment (
         train_data = dataset['train']
         test_data = dataset['validation']
         train_dataset = WNLIDataset(train_data, tokenizer)
-        test_dataset = WNLIDataset(test_dataset, tokenizer)
+        test_dataset = WNLIDataset(test_data, tokenizer)
 
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
