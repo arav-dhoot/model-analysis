@@ -80,7 +80,7 @@ class Model(nn.Module):
                 ):
         
         outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-        pooled_output = outputs.pooler_output
+        pooled_output = outputs.last_hidden_state[:, 0, :]
         logits = self.fc(pooled_output)
         return logits
 
