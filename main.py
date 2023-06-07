@@ -91,6 +91,18 @@ def run_experiment (
         train_dataset = WNLIDataset(train_data, tokenizer)
         test_dataset = WNLIDataset(test_data, tokenizer)
 
+    if task == 'stsb':
+        from dataset.stsbdataset import STSBDataset
+
+        dataset = load_dataset('glue', 'stsb')
+        num_classes = 1
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = STSBDataset(train_data, tokenizer)
+        test_dataset = STSBDataset(test_data, tokenizer)
+
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
