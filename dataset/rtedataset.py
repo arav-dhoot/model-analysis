@@ -11,13 +11,13 @@ class RTEDataset(Dataset):
         return len(self.data)
     
     def __getitem__(self, index):
-        text1 = self.data[index]['premise']
-        text2 = self.data[index]['hypothesis']
+        premise = self.data[index]['premise']
+        hypothesis = self.data[index]['hypothesis']
         label = self.data[index]['label']
         
         encoding = self.tokenizer.encode_plus(
-            text1,
-            text2,
+            premise,
+            hypothesis,
             add_special_tokens=True,
             truncation=True,
             max_length=self.max_length,
