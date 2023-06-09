@@ -55,7 +55,6 @@ class Model(nn.Module):
             for key, value in sorted_var_dict.items():
                 value_list.append(value) 
                 key_list.append(key)
-            value_list = np.array(np.delete(value_list,0))
             counter=0
             cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list))
             for value in cumulative_list:
