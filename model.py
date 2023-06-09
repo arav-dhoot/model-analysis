@@ -63,11 +63,8 @@ class Model(nn.Module):
             value=counter-1
 
             for name, param in self.model.named_parameters():
-                if 'embeddings' in name or 'pooler' in name:
-                    param.requires_grad = True
-                    self.trained_parameters += torch.numel(param)
                 for key in key_list[value:]: 
-                    if name in key and ('embeddings' not in name or 'pooler' not in name):
+                    if key in name or ('embeddings' in name or 'pooler' in name):
                         param.requires_grad = True
                         self.trained_parameters += torch.numel(param)
                     else: param.requires_grad = False

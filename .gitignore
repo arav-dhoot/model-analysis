@@ -6,3 +6,4 @@ older_files/
 *.yaml
 *.txt
 *.wandb
+wandb/
