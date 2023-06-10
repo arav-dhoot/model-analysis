@@ -154,7 +154,7 @@ def run_experiment (
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'mps')
 
     model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -164,6 +164,7 @@ def run_experiment (
         train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_batch_count = model.train_epoch(train_dataloader, optimizer, device)
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_batch_count = model.test_epoch(test_dataloader, device)
 
+        # TODO: different zips for train and test
         for tr_loss, tr_accuracy, tr_time, te_loss, te_accuracy, te_time in zip(train_loss_list, train_accuracy_list, train_time_list, test_loss_list, test_accuracy_list, test_time_list):
             wandb.log(
                 {

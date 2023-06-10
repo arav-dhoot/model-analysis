@@ -61,6 +61,9 @@ class Model(nn.Module):
                 if value > 0.01: break
                 else: counter+=1
             value=counter-1
+            import pdb;pdb.set_trace()
+            print(key_list[value:])
+            print(cumulative_list)
 
             for name, param in self.model.named_parameters():
                 for key in key_list[value:]: 
@@ -86,6 +89,7 @@ class Model(nn.Module):
                 ):
         
         criterion = nn.CrossEntropyLoss()
+        # Regression Loss for STS-B
         loss = criterion(logits, labels)
         return loss
     
