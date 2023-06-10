@@ -10,7 +10,7 @@ parser.add_argument(
 parser.add_argument(
     '--task',
     help='one of the GLUE tasks',
-    choices=['sst2', 'qqp', 'wnli', 'cola']
+    choices=['sst2', 'qqp', 'wnli', 'cola', 'qnli', 'mnli', 'mrpc', 'rte', 'stsb']
 )
 parser.add_argument(
     '--epochs',
