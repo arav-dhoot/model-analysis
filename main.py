@@ -147,7 +147,7 @@ def run_experiment (
         batch_size = 16
 
         train_data = dataset['train']
-        test_data = dataset['validation']
+        test_data = dataset['validation_matched']
         train_dataset = MNLIDataset(train_data, tokenizer)
         test_dataset = MNLIDataset(test_data, tokenizer)
 
