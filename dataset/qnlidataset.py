@@ -11,13 +11,13 @@ class QNLIDataset(Dataset):
         return len(self.data)
     
     def __getitem__(self, index):
-        premise = self.data[index]['sentence1']
-        hypothesis = self.data[index]['sentence2']
+        question = self.data[index]['question']
+        sentence = self.data[index]['sentence']
         label = self.data[index]['label']
         
         encoding = self.tokenizer.encode_plus(
-            premise,
-            hypothesis,
+            question,
+            sentence,
             add_special_tokens=True,
             truncation=True,
             max_length=self.max_length,
