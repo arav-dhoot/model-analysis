@@ -48,7 +48,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'sst2')
         num_classes = 2
-        batch_size = 180
+        batch_size = 300
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -60,7 +60,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'qqp')
         num_classes = 2
-        batch_size = 180
+        batch_size = 300
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -132,7 +132,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'qnli')
         num_classes = 2
-        batch_size = 180
+        batch_size = 300
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -144,7 +144,7 @@ def run_experiment (
 
         dataset = load_dataset('glue', 'mnli')
         num_classes = 3
-        batch_size = 120
+        batch_size = 300
 
         train_data = dataset['train']
         test_data = dataset['validation_matched']
