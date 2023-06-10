@@ -33,5 +33,5 @@ class QQPDataset(Dataset):
         return {
             "input_ids": input_ids,
             "attention_mask": attention_mask,
-            "label": torch.tensor(label, dtype=torch.long)
+            "labels": torch.tensor(label, dtype=torch.long)
         }
