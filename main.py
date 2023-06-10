@@ -114,6 +114,30 @@ def run_experiment (
         test_data = dataset['validation']
         train_dataset = RTEDataset(train_data, tokenizer)
         test_dataset = RTEDataset(test_data, tokenizer)
+    
+    if task == 'mrpc':
+        from dataset.mrpcdataset import MRPCDataset
+
+        dataset = load_dataset('glue', 'mrpc')
+        num_classes = 2
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = MRPCDataset(train_data, tokenizer)
+        test_dataset = MRPCDataset(test_data, tokenizer)
+
+    if task == 'qnli':
+        from dataset.qnlidataset import QNLIDataset
+
+        dataset = load_dataset('glue', 'qnli')
+        num_classes = 2
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = QNLIDataset(train_data, tokenizer)
+        test_dataset = QNLIDataset(test_data, tokenizer)
 
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
