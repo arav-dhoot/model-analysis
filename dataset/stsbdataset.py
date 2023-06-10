@@ -14,7 +14,7 @@ class STSBDataset(Dataset):
         item = self.data[index]
         sentence1 = item['sentence1']
         sentence2 = item['sentence2']
-        similarity_score = item['similarity_score']
+        similarity_score = item['label']
 
         encoded_inputs = self.tokenizer.encode_plus(
             sentence1,
