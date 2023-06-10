@@ -65,9 +65,8 @@ class Model(nn.Module):
             print(key_list[value:])
             print(cumulative_list)
 
-            for name, param in self.model.named_parameters():
-                for key in key_list[value:]: 
-                    if key in name or ('embeddings' in name or 'pooler' in name):
+            for name, param in self.model.named_parameters(): 
+                    if name in key_list[value:] or ('embeddings' in name or 'pooler' in name):
                         param.requires_grad = True
                         self.trained_parameters += torch.numel(param)
                     else: param.requires_grad = False
