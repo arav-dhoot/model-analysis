@@ -139,6 +139,17 @@ def run_experiment (
         train_dataset = QNLIDataset(train_data, tokenizer)
         test_dataset = QNLIDataset(test_data, tokenizer)
 
+    if task == 'mnli':
+        from dataset.mnlidataset import MNLIDataset
+
+        dataset = load_dataset('glue', 'mnli')
+        num_classes = 3
+        batch_size = 16
+
+        train_data = dataset['train']
+        test_data = dataset['validation']
+        train_dataset = MNLIDataset(train_data, tokenizer)
+        test_dataset = MNLIDataset(test_data, tokenizer)
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
