@@ -14,7 +14,7 @@ class STSBDataset(Dataset):
         item = self.data[index]
         sentence1 = item['sentence1']
         sentence2 = item['sentence2']
-        similarity_score = item['label']
+        label = item['label']
 
         encoded_inputs = self.tokenizer.encode_plus(
             sentence1,
@@ -31,5 +31,5 @@ class STSBDataset(Dataset):
         return {
             'input_ids': input_ids,
             'attention_mask': attention_mask,
-            'similarity_score': torch.tensor(similarity_score)
+            'labels': torch.tensor(label)
         }

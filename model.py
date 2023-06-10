@@ -107,8 +107,7 @@ class Model(nn.Module):
             start_time = time.time()
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
-            if self.task == 'qqp' or self.task == 'stsb': labels = batch['label'].to(device) 
-            else: labels = batch['labels'].to(device)
+            labels = batch['labels'].to(device)
             
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
