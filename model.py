@@ -87,8 +87,10 @@ class Model(nn.Module):
                  labels
                 ):
         
-        criterion = nn.CrossEntropyLoss()
-        # Regression Loss for STS-B
+        if self.task == 'stsb':
+            criterion = nn.MSELoss()
+        else:
+            criterion = nn.CrossEntropyLoss()
         loss = criterion(logits, labels)
         return loss
     
@@ -156,8 +158,7 @@ class Model(nn.Module):
                 start_time = time.time()
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
-                if self.task == 'qqp': labels = batch['label'].to(device) 
-                else: labels = batch['labels'].to(device)
+                labels = batch['labels'].to(device)
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 

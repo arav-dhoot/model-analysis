@@ -53,7 +53,7 @@ if __name__ == "__main__":
     run_experiment(model=model, 
                    task=task, 
                    training_type='optimized',
-                   epochs=epochs, 
+                   epochs=epochs*2, 
                    log_to_wandb=log_to_wandb, 
                    learning_rate=lr)
     
