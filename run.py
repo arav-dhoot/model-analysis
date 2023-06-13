@@ -76,7 +76,7 @@ batch_size = data['dataset']['batch_size']
 max_tokens = data['dataset']['max_tokens']
 
 weight_decay = data['optimizer']['weight_decay']
-betas = data['optimizer']['adam_betas']
+betas = eval(data['optimizer']['adam_betas'])
 eps = float(data['optimizer']['adam_eps'])
 
 lr = float(data['optimization']['lr'][0])
