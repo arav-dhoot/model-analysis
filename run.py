@@ -77,9 +77,9 @@ max_tokens = data['dataset']['max_tokens']
 
 weight_decay = data['optimizer']['weight_decay']
 betas = data['optimizer']['adam_betas']
-eps = data['optimizer']['adam_eps']
+eps = float(data['optimizer']['adam_eps'])
 
-lr = data['optimization']['lr']
+lr = float(data['optimization']['lr'][0])
 epochs = data['optimization']['max_epoch']
 
 dropout = data['model']['dropout']
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                    training_type='finetuned',
                    epochs=epochs, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=float(lr[0]),
+                   learning_rate=lr,
                    num_classes=num_classes,
                    batch_size=batch_size, 
                    dropout=dropout,
@@ -105,7 +105,7 @@ if __name__ == "__main__":
                    training_type='frozen',
                    epochs=epochs, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=float(lr[0]),
+                   learning_rate=lr,
                    num_classes=num_classes,
                    batch_size=batch_size, 
                    dropout=dropout,
@@ -119,7 +119,7 @@ if __name__ == "__main__":
                    training_type='optimized',
                    epochs=epochs * 2, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=float(lr[0]),
+                   learning_rate=lr,
                    num_classes=num_classes,
                    batch_size=batch_size, 
                    dropout=dropout,
