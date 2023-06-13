@@ -13,7 +13,14 @@ def run_experiment (
         training_type,
         epochs, 
         log_to_wandb,
-        learning_rate
+        learning_rate, 
+        num_classes, 
+        batch_size,
+        dropout,
+        max_tokens,
+        weight_decay, 
+        betas,
+        eps,
 ):
 
     tokenizer = AutoTokenizer.from_pretrained(model)

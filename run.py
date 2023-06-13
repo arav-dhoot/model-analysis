@@ -90,19 +90,40 @@ if __name__ == "__main__":
                    training_type='finetuned',
                    epochs=epochs, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=lr)
+                   learning_rate=lr,
+                   num_classes=num_classes,
+                   batch_size=batch_size, 
+                   dropout=dropout,
+                   max_tokens=max_tokens, 
+                   weight_decay=weight_decay,
+                   betas=betas,
+                   eps=eps)
     
     run_experiment(model=model, 
                    task=task, 
                    training_type='frozen',
                    epochs=epochs, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=lr)
+                   learning_rate=lr,
+                   num_classes=num_classes,
+                   batch_size=batch_size, 
+                   dropout=dropout,
+                   max_tokens=max_tokens, 
+                   weight_decay=weight_decay,
+                   betas=betas,
+                   eps=eps)
     
     run_experiment(model=model, 
                    task=task, 
                    training_type='optimized',
-                   epochs=epochs*2, 
+                   epochs=epochs, 
                    log_to_wandb=log_to_wandb, 
-                   learning_rate=lr)
+                   learning_rate=lr,
+                   num_classes=num_classes,
+                   batch_size=batch_size, 
+                   dropout=dropout,
+                   max_tokens=max_tokens, 
+                   weight_decay=weight_decay,
+                   betas=betas,
+                   eps=eps)
     
