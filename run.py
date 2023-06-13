@@ -1,3 +1,4 @@
+import yaml
 import argparse
 from main import run_experiment
 
@@ -12,28 +13,76 @@ parser.add_argument(
     help='one of the GLUE tasks',
     choices=['sst2', 'qqp', 'wnli', 'cola', 'qnli', 'mnli', 'mrpc', 'rte', 'stsb']
 )
-parser.add_argument(
-    '--epochs',
-    help='the number of numbers epochs the model will be trained for',
-    type=int
-)
+
 parser.add_argument(
     '--log_to_wandb',
     default=True
-)
-parser.add_argument(
-    '--lr',
-    default=1e-5,
-    type=float
 )
 
 arguments = parser.parse_args()
 
 model = arguments.model
 task = arguments.task
-epochs = arguments.epochs
 log_to_wandb = arguments.log_to_wandb
-lr = arguments.lr
+
+if task == 'sst2':
+    file_path = 'yaml_files/sst_2.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+    
+if task == 'qqp':
+    file_path = 'yaml_files/qqp.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+    
+if task =='wnli':
+    file_path = 'yaml_files/rte.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'cola':
+    file_path = 'yaml_files/cola.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'qnli':
+    file_path = 'yaml_files/qnli.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'mnli':
+    file_path = 'yaml_files/mnli.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'mrpc':
+    file_path = 'yaml_files/mrpc.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'rte':
+    file_path = 'yaml_files/rte.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task == 'stsb':
+    file_path = 'yaml_files/sts_b.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+num_classes = data['task']['num_classes']
+
+batch_size = data['dataset']['batch_size']
+max_tokens = data['dataset']['max_tokens']
+
+weight_decay = data['optimizer']['weight_decay']
+betas = data['optimizer']['adam_betas']
+eps = data['optimizer']['adam_eps']
+
+lr = data['optimization']['lr']
+epochs = data['optimization']['max_epoch']
+
+dropout = data['model']['dropout']
 
 if __name__ == "__main__":
     run_experiment(model=model, 
