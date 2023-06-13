@@ -126,4 +126,3 @@ if __name__ == "__main__":
                    weight_decay=weight_decay,
                    betas=betas,
                    eps=eps)
-    

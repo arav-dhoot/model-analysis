@@ -29,6 +29,9 @@ def run_experiment (
     log_to_wandb = log_to_wandb
     epochs = epochs
     learning_rate = learning_rate
+    batch_size = batch_size
+    num_classes = num_classes
+    max_tokens = max_tokens
 
     short_name = str(random.randint(int(1e5), int(1e6) - 1))
     run_name = f'{task}-{training_type}-{short_name}'
@@ -54,8 +57,9 @@ def run_experiment (
         from dataset.sst2dataset import SST2Dataset
 
         dataset = load_dataset('glue', 'sst2')
-        num_classes = 2
-        batch_size = 300
+        num_classes = num_classes
+        batch_size = batch_size
+        max_tokens = max_tokens
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -66,8 +70,8 @@ def run_experiment (
         from dataset.qqpdataset import QQPDataset
 
         dataset = load_dataset('glue', 'qqp')
-        num_classes = 2
-        batch_size = 300
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -78,8 +82,8 @@ def run_experiment (
         from dataset.coladataset import COLADataset
 
         dataset = load_dataset('glue', 'cola')
-        num_classes = 2
-        batch_size = 16
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -90,8 +94,8 @@ def run_experiment (
         from dataset.wnlidataset import WNLIDataset
 
         dataset = load_dataset('glue', 'wnli')
-        num_classes = 2
-        batch_size = 16
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -102,8 +106,8 @@ def run_experiment (
         from dataset.stsbdataset import STSBDataset
 
         dataset = load_dataset('glue', 'stsb')
-        num_classes = 1
-        batch_size = 16
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -114,8 +118,8 @@ def run_experiment (
         from dataset.rtedataset import RTEDataset
 
         dataset = load_dataset('glue', 'rte')
-        num_classes = 2
-        batch_size = 16
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -126,8 +130,8 @@ def run_experiment (
         from dataset.mrpcdataset import MRPCDataset
 
         dataset = load_dataset('glue', 'mrpc')
-        num_classes = 2
-        batch_size = 16
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -138,8 +142,8 @@ def run_experiment (
         from dataset.qnlidataset import QNLIDataset
 
         dataset = load_dataset('glue', 'qnli')
-        num_classes = 2
-        batch_size = 300
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation']
@@ -150,8 +154,8 @@ def run_experiment (
         from dataset.mnlidataset import MNLIDataset
 
         dataset = load_dataset('glue', 'mnli')
-        num_classes = 3
-        batch_size = 300
+        num_classes = num_classes
+        batch_size = batch_size
 
         train_data = dataset['train']
         test_data = dataset['validation_matched']
@@ -163,8 +167,8 @@ def run_experiment (
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'mps')
 
-    model = Model(num_classes=num_classes, task=task, training_type=training_type).to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
@@ -187,8 +191,7 @@ def run_experiment (
                     'Test Time':te_time
                 }
             )
-
-        
+ 
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
 

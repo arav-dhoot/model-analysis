@@ -11,14 +11,17 @@ class Model(nn.Module):
                  num_classes,
                  task,
                  training_type,
+                 dropout,
                  model='roberta-base', 
                 ):
         
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
+        self.dropout = nn.Dropout(dropout)
         self.fc = nn.Sequential(
             nn.Linear(self.model.config.hidden_size, self.model.config.hidden_size),
             nn.GELU(),
+            self.dropout,
             nn.Linear(self.model.config.hidden_size, num_classes)
             )
         # self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
