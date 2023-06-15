@@ -172,8 +172,8 @@ def run_experiment (
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, _ = model.train_epoch(train_dataloader, optimizer, device)
-        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, _ = model.test_epoch(test_dataloader, device)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step = model.train_epoch(train_dataloader, optimizer, device)
+        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step = model.test_epoch(test_dataloader, device)
 
         for tr_loss, tr_accuracy, tr_time in zip(train_loss_list, train_accuracy_list, train_time_list):
             wandb.log(
@@ -181,7 +181,8 @@ def run_experiment (
                     'Train Loss':tr_loss,
                     'Train Accuracy':tr_accuracy,
                     'Train Time':tr_time,
-                }
+                }, 
+                step=train_step
             )
         for te_loss, te_accuracy, te_time in zip(test_loss_list, test_accuracy_list, test_time_list):
             wandb.log(
@@ -189,7 +190,8 @@ def run_experiment (
                     'Test Loss':te_loss,
                     'Test Accuracy':te_accuracy,
                     'Test Time':te_time
-                }
+                }, 
+                step=test_step 
             )
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
