@@ -64,8 +64,6 @@ class Model(nn.Module):
                 if value > 0.01: break
                 else: counter+=1
             value=counter-1
-            print(key_list[value:])
-            print(cumulative_list)
 
             for name, param in self.model.named_parameters(): 
                     if name in key_list[value:] or ('embeddings' in name or 'pooler' in name):
