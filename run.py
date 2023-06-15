@@ -85,7 +85,6 @@ epochs = data['optimization']['max_epoch']
 dropout = data['model']['dropout']
 
 if __name__ == "__main__":
-    import pdb; pdb.set_trace()
     run_experiment(model=model, 
                    task=task, 
                    training_type='finetuned',
