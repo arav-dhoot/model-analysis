@@ -185,6 +185,7 @@ def run_experiment (
                 step = (epoch*len(train_step_list)) + tr_step
             )
         for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
+            import pdb;pdb.set_trace()
             wandb.log(
                 {
                     'Test Loss':te_loss,
