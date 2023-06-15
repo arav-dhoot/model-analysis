@@ -104,6 +104,7 @@ class Model(nn.Module):
         total_loss = 0.0
         total_correct = 0
         batch_count = 0 
+        batch_list = list()
         time_list = list()
         loss_list = list()
         accuracy_list = list()
@@ -132,12 +133,13 @@ class Model(nn.Module):
                 elif param.grad is not None:
                     self.grad_dict[name].append(round(torch.norm(param.grad).item(), 3))
             batch_count += 1
+            batch_list.append(batch_count)
             end_time = time.time()
             time_list.append(end_time - start_time)
 
         accuracy = total_correct / len(dataloader.dataset)
         
-        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_count
+        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_list
     
     def test_epoch(self, 
                    dataloader, 
@@ -149,6 +151,7 @@ class Model(nn.Module):
         total_correct = 0
         total_predictions = 0
         batch_count = 0
+        batch_list = list()
         time_list = list()
         loss_list = list()
         accuracy_list = list()
@@ -169,12 +172,13 @@ class Model(nn.Module):
                 accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
                 total_predictions += labels.size(0)
                 batch_count += 1
+                batch_list.append(batch_count)
                 end_time = time.time()
                 time_list.append(end_time - start_time)
                 
         accuracy = total_correct / total_predictions
 
-        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_count
+        return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_list
 
     def file_write(self):
         file_name = f'{self.task}-data.json'
