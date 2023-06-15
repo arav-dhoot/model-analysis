@@ -172,26 +172,26 @@ def run_experiment (
     wandb.watch(model, log='all')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step = model.train_epoch(train_dataloader, optimizer, device)
-        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step = model.test_epoch(test_dataloader, device)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device)
+        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(test_dataloader, device)
 
-        for tr_loss, tr_accuracy, tr_time in zip(train_loss_list, train_accuracy_list, train_time_list):
+        for tr_loss, tr_accuracy, tr_time, tr_step in zip(train_loss_list, train_accuracy_list, train_time_list, train_step_list):
             wandb.log(
                 {
                     'Train Loss':tr_loss,
                     'Train Accuracy':tr_accuracy,
                     'Train Time':tr_time,
                 }, 
-                step=train_step
+                step = (epoch*len(train_step_list)) + tr_step
             )
-        for te_loss, te_accuracy, te_time in zip(test_loss_list, test_accuracy_list, test_time_list):
+        for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
             wandb.log(
                 {
                     'Test Loss':te_loss,
                     'Test Accuracy':te_accuracy,
                     'Test Time':te_time
                 }, 
-                step=test_step 
+                step = (epoch*len(test_step_list)) + te_step 
             )
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
