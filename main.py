@@ -182,17 +182,16 @@ def run_experiment (
                     'Train Accuracy':tr_accuracy,
                     'Train Time':tr_time,
                 }, 
-                step = (epoch*len(train_step_list)) + tr_step
+                step = (epoch * len(train_step_list)) + tr_step
             )
         for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
-            import pdb;pdb.set_trace()
             wandb.log(
                 {
                     'Test Loss':te_loss,
                     'Test Accuracy':te_accuracy,
-                    'Test Time':te_time
+                    'Test Time':te_time,
                 }, 
-                step = (epoch*len(test_step_list)) + te_step 
+                step = (epoch * len(test_step_list)) + te_step 
             )
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
