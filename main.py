@@ -193,6 +193,7 @@ def run_experiment (
                 }, 
                 step = (epoch * len(test_step_list)) + te_step 
             )
+            import pdb; pdb.set_trace()
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
