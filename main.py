@@ -190,7 +190,7 @@ def run_experiment (
                     'Test Loss':te_loss,
                     'Test Accuracy':te_accuracy,
                     'Test Time':te_time,
-                }, 
+                },  
                 step = (epoch * len(test_step_list)) + te_step 
             )
             import pdb; pdb.set_trace()
