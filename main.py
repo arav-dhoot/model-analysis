@@ -183,7 +183,6 @@ def run_experiment (
                     'Train Time':tr_time,
                     'Train Step': (epoch * len(train_step_list)) + tr_step
                 }, 
-                step = (epoch * len(train_step_list)) + tr_step
             )
         
         for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
@@ -193,8 +192,7 @@ def run_experiment (
                     'Test Accuracy':te_accuracy,
                     'Test Time':te_time,
                     'Test Step': (epoch * len(test_step_list)) + te_step 
-                },  
-                step = (epoch * len(test_step_list)) + te_step 
+                },   
             )
             import pdb; pdb.set_trace()
  
