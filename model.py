@@ -98,7 +98,7 @@ class Model(nn.Module):
                     dataloader, 
                     optimizer, 
                     scheduler,
-                    scheduler_steps,
+                    scheduler_updates,
                     device
                     ):
         
@@ -110,6 +110,10 @@ class Model(nn.Module):
         time_list = list()
         loss_list = list()
         accuracy_list = list()
+
+        if scheduler == 'polynomial_decay':
+            from torch.optim.lr_scheduler import PolynomialLR
+            scheduler = PolynomialLR(optimizer, power=1.0, warmup_updates=scheduler_updates)
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()
@@ -122,6 +126,7 @@ class Model(nn.Module):
             loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
+            scheduler.step()
             
             total_loss += loss.item()
             loss_list.append(loss.item())
