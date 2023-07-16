@@ -84,6 +84,9 @@ epochs = data['optimization']['max_epoch']
 
 dropout = data['model']['dropout']
 
+scheduler = data['lr_scheduler']['_name']
+scheduler_updates = data['lr_scheduler']['warmup_updates']
+
 if __name__ == "__main__":
     run_experiment(model=model, 
                    task=task, 
@@ -97,7 +100,9 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps, 
+                   lr_scheduler=scheduler,
+                   scheduler_updates=scheduler_updates)
     
     run_experiment(model=model, 
                    task=task, 
@@ -111,7 +116,9 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps, 
+                   lr_scheduler=scheduler,
+                   scheduler_updates=scheduler_updates)
     
     run_experiment(model=model, 
                    task=task, 
@@ -125,4 +132,6 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps,
+                   lr_scheduler=scheduler,
+                   scheduler_updates=scheduler_updates)
