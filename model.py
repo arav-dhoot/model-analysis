@@ -97,6 +97,8 @@ class Model(nn.Module):
     def train_epoch(self, 
                     dataloader, 
                     optimizer, 
+                    scheduler,
+                    scheduler_steps,
                     device
                     ):
         

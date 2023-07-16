@@ -21,6 +21,8 @@ def run_experiment (
         weight_decay, 
         betas,
         eps,
+        lr_scheduler, 
+        scheduler_updates
 ):
 
     tokenizer = AutoTokenizer.from_pretrained(model)
