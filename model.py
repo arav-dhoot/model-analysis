@@ -118,9 +118,9 @@ class Model(nn.Module):
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()
-            input_ids = batch['input_ids'].to(device, dtype=torch.bfloat16)
-            attention_mask = batch['attention_mask'].to(device, dtype=torch.bfloat16)
-            labels = batch['labels'].to(device, dtype=torch.bfloat16)
+            input_ids = batch['input_ids'].to(device)
+            attention_mask = batch['attention_mask'].to(device)
+            labels = batch['labels'].to(device)
             
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
@@ -167,9 +167,9 @@ class Model(nn.Module):
         with torch.no_grad():
             for batch in tqdm.tqdm(dataloader):
                 start_time = time.time()
-                input_ids = batch['input_ids'].to(device, dtype=torch.bfloat16)
-                attention_mask = batch['attention_mask'].to(device, dtype=torch.bfloat16)
-                labels = batch['labels'].to(device, dtype=torch.bfloat16)
+                input_ids = batch['input_ids'].to(device)
+                attention_mask = batch['attention_mask'].to(device)
+                labels = batch['labels'].to(device)
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 
