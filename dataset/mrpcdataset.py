@@ -31,5 +31,5 @@ class MRPCDataset(Dataset):
         return {
             'input_ids': input_ids,
             'attention_mask': attention_mask,
-            'labels': torch.tensor(label, dtype=torch.long)
+            'labels': torch.tensor(label, dtype=torch.bfloat16)
         }
