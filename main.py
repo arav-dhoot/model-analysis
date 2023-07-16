@@ -202,7 +202,7 @@ def run_experiment (
             {
                     'Epoch':epoch + 1,
                     'Test Accuracy (epoch)':test_accuracy,
-                    'Test Time (batch)':test_loss,
+                    'Test Loss (epoch)':test_loss,
                 },  
         )
  
