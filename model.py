@@ -60,7 +60,8 @@ class Model(nn.Module):
                 value_list.append(value) 
                 key_list.append(key)
             counter=0
-            # cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list), dtype=np.float16)
+            cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list), 
+                                       # dtype=np.float16)
             for value in cumulative_list:
                 if value > 0.01: break
                 else: counter+=1
