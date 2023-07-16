@@ -15,6 +15,7 @@ class Model(nn.Module):
                  model='roberta-base', 
                 ):
         
+        torch.set_default_dtype(torch.bfloat16)
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(dropout)
@@ -117,9 +118,9 @@ class Model(nn.Module):
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()
-            input_ids = batch['input_ids'].to(device)
-            attention_mask = batch['attention_mask'].to(device)
-            labels = batch['labels'].to(device)
+            input_ids = batch['input_ids'].to(device, dtype=torch.bfloat16)
+            attention_mask = batch['attention_mask'].to(device, dtype=torch.bfloat16)
+            labels = batch['labels'].to(device, dtype=torch.bfloat16)
             
             optimizer.zero_grad()
             logits = self.forward(input_ids, attention_mask)
@@ -166,9 +167,9 @@ class Model(nn.Module):
         with torch.no_grad():
             for batch in tqdm.tqdm(dataloader):
                 start_time = time.time()
-                input_ids = batch['input_ids'].to(device)
-                attention_mask = batch['attention_mask'].to(device)
-                labels = batch['labels'].to(device)
+                input_ids = batch['input_ids'].to(device, dtype=torch.bfloat16)
+                attention_mask = batch['attention_mask'].to(device, dtype=torch.bfloat16)
+                labels = batch['labels'].to(device, dtype=torch.bfloat16)
                 logits = self.forward(input_ids, attention_mask)
                 loss = self.get_loss(logits, labels)
                 
