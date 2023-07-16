@@ -188,13 +188,20 @@ def run_experiment (
         for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
             wandb.log(
                 {
-                    'Test Loss':te_loss,
-                    'Test Accuracy':te_accuracy,
+                    'Test Loss (batch)':te_loss,
+                    'Test Accuracy (batch)':te_accuracy,
                     'Test Time':te_time,
                     'Test Step': (epoch * len(test_step_list)) + te_step 
                 },   
             )
-            import pdb; pdb.set_trace()
+
+        wandb.log(
+            {
+                    'Epoch':epoch + 1,
+                    'Test Accuracy (epoch)':test_accuracy,
+                    'Test Time (batch)':test_loss,
+                },  
+        )
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
