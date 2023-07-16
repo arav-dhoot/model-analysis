@@ -15,7 +15,7 @@ class Model(nn.Module):
                  model='roberta-base', 
                 ):
         
-        torch.set_default_dtype(torch.bfloat16)
+        torch.set_default_dtype(torch.float16)
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(dropout)
