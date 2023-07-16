@@ -170,7 +170,7 @@ def run_experiment (
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'mps')
 
-    model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device, dtype=torch.bfloat16)
+    model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
     wandb.watch(model, log='all')
 
