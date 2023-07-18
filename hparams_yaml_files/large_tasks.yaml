@@ -1,0 +1,22 @@
+max_epochs:
+  - 2
+  - 3
+  - 5
+
+learning_rate:
+  - 1e-5
+  - 2e-5
+  - 3e-5
+  - 4e-5
+
+batch_size:
+  - 32
+
+warm_up:
+  - 0.06
+
+max_tokens:
+  - 512
+
+weight_decay:
+  - 0.01

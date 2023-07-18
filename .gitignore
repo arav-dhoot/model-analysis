@@ -1,0 +1,11 @@
+**/.DS_Store
+older_files/
+*.json
+*.pyc
+*.log
+*.yaml
+*.txt
+*.wandb
+wandb/
+!yaml_files/*.yaml
+!hparams_yaml_files/*.yaml
