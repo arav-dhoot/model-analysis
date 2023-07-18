@@ -1,3 +1,5 @@
+import yaml
+import wandb
 import argparse
 from main import run_experiment
 
@@ -24,7 +26,16 @@ model = arguments.model
 task = arguments.task
 log_to_wandb = arguments.log_to_wandb
 
-# TODO: Comparing the task to the set out hyperparameters
+if task in ['sst2', 'mnli', 'qqp', 'qnli']:
+    file_path = 'hparams_yaml_files/large_tasks.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
+if task in ['cola', 'rte', 'mrpc', 'stsb']:
+    file_path = 'hparams_yaml_files/small_tasks.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+
 #   TODO: Creating a .yaml file
 # TODO: Running the task
 # TODO: Setting up wandb logging
