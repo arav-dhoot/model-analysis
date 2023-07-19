@@ -58,24 +58,24 @@ def run_experiment (
             config=config,
         )
     
-    if sweep:
+    # if sweep:
 
-        sweep_configuration = {
-            'method': 'random',
-            'name': 'sweep',
-            'metric': {'goal': 'maximize', 'name': 'accuracy'},
-            'parameters': 
-            {
-                'batch_size': {'values': [16, 32]},
-                'epochs': {'values': [2, 5, 10]},
-                'learning_rate': {'values': [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]}
-            }
-        }
+    #     sweep_configuration = {
+    #         'method': 'random',
+    #         'name': 'sweep',
+    #         'metric': {'goal': 'maximize', 'name': 'accuracy'},
+    #         'parameters': 
+    #         {
+    #             'batch_size': {'values': [16, 32]},
+    #             'epochs': {'values': [2, 5, 10]},
+    #             'learning_rate': {'values': [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]}
+    #         }
+    #     }
 
-        sweep_id = wandb.sweep(
-            sweep=sweep_configuration, 
-            project='my-first-sweep'
-        )
+    #     sweep_id = wandb.sweep(
+    #         sweep=sweep_configuration, 
+    #         project='my-first-sweep'
+    #     )
 
     if task == 'sst2':
         from dataset.sst2dataset import SST2Dataset
