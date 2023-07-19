@@ -1,6 +1,6 @@
 import yaml
 import optuna
-from ..main import run_experiment
+from . import main
 
 def objective(trial):
     file_path = './hparams_yaml_files/small_tasks.yaml'
@@ -23,7 +23,7 @@ def objective(trial):
     dropout = 0.1
     weight_decay = 0.01 
 
-    accuracy = run_experiment(
+    accuracy = main.run_experiment(
         model='roberta-base',
         task='mrpc',
         training_type='finetune',
