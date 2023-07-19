@@ -129,7 +129,7 @@ class Model(nn.Module):
             loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
-            scheduler.step()
+            # scheduler.step()
             
             total_loss += loss.item()
             loss_list.append(loss.item())
