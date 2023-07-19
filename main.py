@@ -21,7 +21,7 @@ def run_experiment (
         weight_decay, 
         betas,
         eps,
-        lr_scheduler, 
+        # lr_scheduler, 
         project_name='model_analysis',
         sweep=False,
         sweep_name=None,
