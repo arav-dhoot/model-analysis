@@ -98,7 +98,6 @@ class Model(nn.Module):
     def train_epoch(self, 
                     dataloader, 
                     optimizer, 
-                    scheduler,
                     device
                     ):
         
@@ -111,13 +110,13 @@ class Model(nn.Module):
         loss_list = list()
         accuracy_list = list()
 
-        if scheduler == 'polynomial_decay':
-            from torch.optim.lr_scheduler import PolynomialLR
-            scheduler = PolynomialLR(optimizer)
+        # if scheduler == 'polynomial_decay':
+        #     from torch.optim.lr_scheduler import PolynomialLR
+        #     scheduler = PolynomialLR(optimizer)
 
-        if scheduler == 'linear':
-            from torch.optim.lr_scheduler import LinearLR
-            scheduler = LinearLR(optimizer)
+        # if scheduler == 'linear':
+        #     from torch.optim.lr_scheduler import LinearLR
+        #     scheduler = LinearLR(optimizer)
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()
