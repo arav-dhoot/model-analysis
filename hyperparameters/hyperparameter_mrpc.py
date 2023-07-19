@@ -1,6 +1,6 @@
 import yaml
 import optuna
-from ..model-analysis import main
+from model-analysis.main import run_experiment
 
 
 def objective(trial):
@@ -24,7 +24,7 @@ def objective(trial):
     dropout = 0.1
     weight_decay = 0.01 
 
-    accuracy = main.run_experiment(
+    accuracy = run_experiment(
         model='roberta-base',
         task='mrpc',
         training_type='finetune',
