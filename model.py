@@ -99,7 +99,6 @@ class Model(nn.Module):
                     dataloader, 
                     optimizer, 
                     scheduler,
-                    scheduler_updates,
                     device
                     ):
         
@@ -114,7 +113,11 @@ class Model(nn.Module):
 
         if scheduler == 'polynomial_decay':
             from torch.optim.lr_scheduler import PolynomialLR
-            scheduler = PolynomialLR(optimizer, power=1.0, total_iters=scheduler_updates)
+            scheduler = PolynomialLR(optimizer)
+
+        if scheduler == 'linear':
+            from torch.optim.lr_scheduler import LinearLR
+            scheduler = LinearLR(optimizer)
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()

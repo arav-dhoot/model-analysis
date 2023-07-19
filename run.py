@@ -101,8 +101,7 @@ if __name__ == "__main__":
                    weight_decay=weight_decay,
                    betas=betas,
                    eps=eps, 
-                   lr_scheduler=scheduler,
-                   scheduler_updates=scheduler_updates)
+                   lr_scheduler=scheduler)
     
     run_experiment(model=model, 
                    task=task, 
@@ -117,8 +116,7 @@ if __name__ == "__main__":
                    weight_decay=weight_decay,
                    betas=betas,
                    eps=eps, 
-                   lr_scheduler=scheduler,
-                   scheduler_updates=scheduler_updates)
+                   lr_scheduler=scheduler)
     
     run_experiment(model=model, 
                    task=task, 
@@ -133,5 +131,4 @@ if __name__ == "__main__":
                    weight_decay=weight_decay,
                    betas=betas,
                    eps=eps,
-                   lr_scheduler=scheduler,
-                   scheduler_updates=scheduler_updates)
+                   lr_scheduler=scheduler)

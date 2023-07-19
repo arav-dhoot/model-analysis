@@ -22,7 +22,7 @@ def run_experiment (
         betas,
         eps,
         lr_scheduler, 
-        scheduler_updates
+        project_name='model_analysis'
 ):
 
     torch.set_default_dtype(torch.float16)
@@ -50,7 +50,7 @@ def run_experiment (
         )
 
         wandb.init(
-            project='model_analysis',
+            project=project_name,
             group=f'{time.strftime("%m-%d", time.localtime(time.time()))}-{task}',
             name=f'{task}-{training_type}-{short_name}',
             config=config,
@@ -213,3 +213,5 @@ def run_experiment (
         file_location = model.file_write()
         wandb.save(file_location)
     wandb.finish()
+
+    return test_accuracy
