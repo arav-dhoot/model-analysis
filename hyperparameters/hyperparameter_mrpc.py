@@ -1,6 +1,6 @@
 import yaml
 import optuna
-from ...main import run_experiment
+from model_analysis.main import run_experiment
 
 
 def objective(trial):
