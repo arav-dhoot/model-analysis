@@ -1,6 +1,6 @@
 import yaml
 import optuna
-from .main import run_experiment
+from ..main import run_experiment
 
 def objective(trial):
     file_path = './hparams_yaml_files/small_tasks.yaml'
