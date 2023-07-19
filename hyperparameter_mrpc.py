@@ -40,8 +40,6 @@ def objective(trial):
         eps=eps, 
         lr_scheduler='linear',
         project_name='model_hyperparameter_search',
-        sweep=True,
-        sweep_name='hyperparam_search'
     )
 
     return accuracy
