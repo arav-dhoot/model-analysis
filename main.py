@@ -58,7 +58,7 @@ def run_experiment (
             config=config,
         )
     
-    if sweep:
+    elif sweep:
 
         sweep_configuration = {
             'method': 'random',
