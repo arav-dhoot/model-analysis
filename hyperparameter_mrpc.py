@@ -9,10 +9,10 @@ def objective(trial):
         data = yaml.safe_load(file)
 
     epochs = trial.suggest_categorical('epochs', data['max_epochs'])
-    learning_rate = trial.suggest_categorical('learning_rate', float(data['learning_rate']))
+    learning_rate = trial.suggest_categorical('learning_rate', [float(value) for value in data['learning_rate']])
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
 
-    file_path = '/yaml_files/mrpc.yaml'
+    file_path = './yaml_files/mrpc.yaml'
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
     
@@ -27,7 +27,7 @@ def objective(trial):
     accuracy = run_experiment(
         model='roberta-base',
         task='mrpc',
-        training_type='finetune',
+        training_type='finetuned',
         epochs=epochs,
         log_to_wandb=True,
         learning_rate=learning_rate,
@@ -39,8 +39,9 @@ def objective(trial):
         betas=betas,
         eps=eps, 
         lr_scheduler='linear',
-        scheduler_updates=None,
-        project_name='model_hyperparameter_search'
+        project_name='model_hyperparameter_search',
+        sweep=True,
+        sweep_name='hyperparam_search'
     )
 
     return accuracy
