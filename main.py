@@ -27,7 +27,7 @@ def run_experiment (
         sweep_name=None,
 ):
 
-    torch.set_default_dtype(torch.float16)
+    # torch.set_default_dtype(torch.float16)
     tokenizer = AutoTokenizer.from_pretrained(model)
     task = task
     training_type = training_type
