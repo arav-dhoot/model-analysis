@@ -1,6 +1,6 @@
 import yaml
 import optuna
-from model_analysis.main import run_experiment
+from main import run_experiment
 
 
 def objective(trial):
@@ -12,7 +12,7 @@ def objective(trial):
     learning_rate = trial.suggest_categorical('learning_rate', float(data['learning_rate']))
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
 
-    file_path = './yaml_files/mrpc.yaml'
+    file_path = '/yaml_files/mrpc.yaml'
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
     
