@@ -13,7 +13,7 @@ def objective(trial):
     learning_rate = trial.suggest_categorical('learning_rate', [float(value) for value in data['learning_rate']])
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
 
-    file_path = './yaml_files/mrpc.yaml'
+    file_path = './yaml_files/cola.yaml'
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
     
@@ -27,7 +27,7 @@ def objective(trial):
 
     accuracy = run_experiment(
         model='roberta-base',
-        task='mrpc',
+        task='cola',
         training_type='finetuned',
         epochs=epochs,
         log_to_wandb=True,
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print(f"{key}: {value}")
 
-    file_name = '/hparams_json_files/mrpc-hparams.json'
+    file_name = '/hparams_json_files/cola-hparams.json'
     file = open(file_name, 'x')
     with open(file_name, 'w') as file:
         json.dump(trial.params, file, indent=4)
