@@ -13,7 +13,7 @@ def objective(trial):
     learning_rate = trial.suggest_categorical('learning_rate', [float(value) for value in data['learning_rate']])
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
 
-    file_path = './yaml_files/stsb.yaml'
+    file_path = './yaml_files/sts_b.yaml'
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
     
