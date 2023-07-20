@@ -1,4 +1,5 @@
 import yaml
+import json
 import optuna
 from main import run_experiment
 
@@ -46,10 +47,15 @@ def objective(trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="maximize") 
-    study.optimize(objective, n_trials=100) 
+    study.optimize(objective, n_trials=25) 
     print("Best trial:")
     trial = study.best_trial
     print("Value: ", trial.value)
     print("Params: ")
     for key, value in trial.params.items():
         print(f"{key}: {value}")
+
+    file_name = 'mrpc-hparams.json'
+    file = open(file_name, 'x')
+    with open(file_name, 'w') as file:
+        json.dump(trial.params, file, indent=4)
