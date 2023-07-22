@@ -39,7 +39,8 @@ def objective(trial):
         max_tokens=max_tokens,
         weight_decay=weight_decay,
         betas=betas,
-        eps=eps, 
+        eps=eps,
+        warmup_ratio=warmup_ratio, 
         project_name='model_hyperparameter_search',
     )
 
