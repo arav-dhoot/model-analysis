@@ -21,6 +21,7 @@ def run_experiment (
         weight_decay, 
         betas,
         eps,
+        warmup_ratio,
         project_name='model_analysis',
 ):
 
@@ -176,7 +177,7 @@ def run_experiment (
     print(f'Learning Rate: {learning_rate} - Total Epochs: {epochs} - Batch Size: {batch_size}')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device, warmup_ratio=warmup_ratio)
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(test_dataloader, device)
 
         for tr_loss, tr_accuracy, tr_time, tr_step in zip(train_loss_list, train_accuracy_list, train_time_list, train_step_list):
