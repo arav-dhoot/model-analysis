@@ -39,7 +39,6 @@ def objective(trial):
         weight_decay=weight_decay,
         betas=betas,
         eps=eps, 
-        # lr_scheduler='linear',
         project_name='model_hyperparameter_search',
     )
 

@@ -4,6 +4,7 @@ import time
 import torch
 import numpy as np
 import torch.nn as nn
+from torch.optim.lr_scheduler import LambdaLR
 from transformers import AutoModel
 
 class Model(nn.Module):
@@ -98,7 +99,8 @@ class Model(nn.Module):
     def train_epoch(self, 
                     dataloader, 
                     optimizer, 
-                    device
+                    device,
+                    warmup_ratio = 0.06
                     ):
         
         self.train()
@@ -110,13 +112,12 @@ class Model(nn.Module):
         loss_list = list()
         accuracy_list = list()
 
-        # if scheduler == 'polynomial_decay':
-        #     from torch.optim.lr_scheduler import PolynomialLR
-        #     scheduler = PolynomialLR(optimizer)
-
-        # if scheduler == 'linear':
-        #     from torch.optim.lr_scheduler import LinearLR
-        #     scheduler = LinearLR(optimizer)
+        def lr_lambda(batch):
+            if batch < (warmup_ratio * len(dataloader)):
+                return float(batch) / float(max(1, (warmup_ratio * len(dataloader))))
+            return max(0.0, float(len(dataloader) - batch) / float(max(1, len(dataloader) -  (warmup_ratio * len(dataloader)))))
+    
+        scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
         
         for batch in tqdm.tqdm(dataloader):
             start_time = time.time()
@@ -129,7 +130,7 @@ class Model(nn.Module):
             loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
-            # scheduler.step()
+            scheduler.step()
             
             total_loss += loss.item()
             loss_list.append(loss.item())

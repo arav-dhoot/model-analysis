@@ -21,10 +21,7 @@ def run_experiment (
         weight_decay, 
         betas,
         eps,
-        # lr_scheduler, 
         project_name='model_analysis',
-        sweep=False,
-        sweep_name=None,
 ):
 
     # torch.set_default_dtype(torch.float16)
@@ -57,25 +54,6 @@ def run_experiment (
             name=f'{task}-{training_type}-{short_name}',
             config=config,
         )
-    
-    # if sweep:
-
-    #     sweep_configuration = {
-    #         'method': 'random',
-    #         'name': 'sweep',
-    #         'metric': {'goal': 'maximize', 'name': 'accuracy'},
-    #         'parameters': 
-    #         {
-    #             'batch_size': {'values': [16, 32]},
-    #             'epochs': {'values': [2, 5, 10]},
-    #             'learning_rate': {'values': [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]}
-    #         }
-    #     }
-
-    #     sweep_id = wandb.sweep(
-    #         sweep=sweep_configuration, 
-    #         project='my-first-sweep'
-    #     )
 
     if task == 'sst2':
         from dataset.sst2dataset import SST2Dataset
@@ -231,9 +209,6 @@ def run_experiment (
  
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
-
-    if sweep:
-        wandb.agent(sweep_id)
 
     if training_type == 'finetuned': 
         file_location = model.file_write()
