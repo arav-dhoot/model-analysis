@@ -12,6 +12,7 @@ def objective(trial):
     epochs = trial.suggest_categorical('epochs', data['max_epochs'])
     learning_rate = trial.suggest_categorical('learning_rate', [float(value) for value in data['learning_rate']])
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
+    warmup_ratio = trial.suggest_categorical('warmup_ratio', data['warm_up'])
 
     file_path = './yaml_files/mrpc.yaml'
     with open(file_path, 'r') as file:
@@ -39,6 +40,7 @@ def objective(trial):
         weight_decay=weight_decay,
         betas=betas,
         eps=eps, 
+        warmup_ratio=warmup_ratio,
         project_name='model_hyperparameter_search',
     )
 
