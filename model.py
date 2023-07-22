@@ -16,7 +16,7 @@ class Model(nn.Module):
                  model='roberta-base', 
                 ):
         
-        torch.set_default_dtype(torch.float16)
+        # torch.set_default_dtype(torch.float16)
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(dropout)
@@ -61,7 +61,7 @@ class Model(nn.Module):
                 value_list.append(value) 
                 key_list.append(key)
             counter=0
-            cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list), dtype=np.float16)
+            cumulative_list = np.array(np.cumsum(value_list)/np.sum(value_list))
             for value in cumulative_list:
                 if value > 0.01: break
                 else: counter+=1

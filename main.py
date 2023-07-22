@@ -25,7 +25,7 @@ def run_experiment (
         project_name='model_analysis',
 ):
 
-    torch.set_default_dtype(torch.float16)
+    # torch.set_default_dtype(torch.float16)
     tokenizer = AutoTokenizer.from_pretrained(model)
     task = task
     training_type = training_type
