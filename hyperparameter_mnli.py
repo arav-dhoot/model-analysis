@@ -1,8 +1,6 @@
 import yaml
 import json
 import optuna
-import sys
-sys.path
 from main import run_experiment
 
 

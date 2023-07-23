@@ -25,7 +25,6 @@ def run_experiment (
         project_name='model_analysis',
 ):
 
-    # torch.set_default_dtype(torch.float16)
     tokenizer = AutoTokenizer.from_pretrained(model)
     task = task
     training_type = training_type
@@ -173,6 +172,44 @@ def run_experiment (
     model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
     wandb.watch(model, log='all')
+
+    if task == 'stsb' or task == 'rte' or task == 'mrpc':
+        from dataset.mnlidataset import MNLIDataset
+
+        mnli_dataset = load_dataset('glue', 'mnli')
+        mnli_num_classes = num_classes
+        mnli_batch_size = batch_size
+
+        mnli_train_data = dataset['train']
+        mnli_test_data = dataset['validation_matched']
+        mnli_train_dataset = MNLIDataset(train_data, tokenizer)
+        mnli_test_dataset = MNLIDataset(test_data, tokenizer)
+
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device, warmup_ratio=warmup_ratio)
+        test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(test_dataloader, device)
+
+        for tr_loss, tr_accuracy, tr_time, tr_step in zip(train_loss_list, train_accuracy_list, train_time_list, train_step_list):
+            wandb.log(
+                {
+                    'Train Loss':tr_loss,
+                    'Train Accuracy':tr_accuracy,
+                    'Train Time':tr_time,
+                    'Train Step': (epoch * len(train_step_list)) + tr_step
+                }, 
+            )
+        
+        for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
+            wandb.log(
+                {
+                    'Test Loss (batch)':te_loss,
+                    'Test Accuracy (batch)':te_accuracy,
+                    'Test Time':te_time,
+                    'Test Step': (epoch * len(test_step_list)) + te_step 
+                },   
+            )
+ 
+        print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
+    print(f'{model.trained_proportion * 100}% of the model was trained')
 
     print(f'Learning Rate: {learning_rate} - Total Epochs: {epochs} - Batch Size: {batch_size}')
 

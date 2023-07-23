@@ -16,7 +16,6 @@ class Model(nn.Module):
                  model='roberta-base', 
                 ):
         
-        # torch.set_default_dtype(torch.float16)
         super(Model, self).__init__()
         self.model = AutoModel.from_pretrained(model)
         self.dropout = nn.Dropout(dropout)
@@ -100,6 +99,7 @@ class Model(nn.Module):
                     dataloader, 
                     optimizer, 
                     device,
+                    epochs,
                     warmup_ratio = 0.06
                     ):
         
@@ -113,10 +113,13 @@ class Model(nn.Module):
         accuracy_list = list()
 
         def lr_lambda(batch):
-            if batch < (warmup_ratio * len(dataloader)):
+            if batch < (warmup_ratio * len(dataloader) * epochs):
                 return float(batch) / float(max(1, (warmup_ratio * len(dataloader))))
             return max(0.0, float(len(dataloader) - batch) / float(max(1, len(dataloader) -  (warmup_ratio * len(dataloader)))))
     
+        # TODO: epoch multiplication    
+        # TODO: wandb.log(learning_rate)
+
         scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
         
         for batch in tqdm.tqdm(dataloader):
@@ -126,8 +129,10 @@ class Model(nn.Module):
             labels = batch['labels'].to(device)
             
             optimizer.zero_grad()
-            logits = self.forward(input_ids, attention_mask)
-            loss = self.get_loss(logits, labels)
+            
+            with torch.autocast(device_type='cpu', dtype=torch.bfloat16):
+                logits = self.forward(input_ids, attention_mask)
+                loss = self.get_loss(logits, labels)
             loss.backward()
             optimizer.step()
             scheduler.step()
@@ -173,8 +178,10 @@ class Model(nn.Module):
                 input_ids = batch['input_ids'].to(device)
                 attention_mask = batch['attention_mask'].to(device)
                 labels = batch['labels'].to(device)
-                logits = self.forward(input_ids, attention_mask)
-                loss = self.get_loss(logits, labels)
+
+                with torch.autocast(device_type='cpu', dtype=torch.bfloat16):
+                    logits = self.forward(input_ids, attention_mask)
+                    loss = self.get_loss(logits, labels)
                 
                 total_loss += loss.item()
                 loss_list.append(loss.item())
