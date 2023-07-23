@@ -12,8 +12,9 @@ def objective(trial):
     epochs = trial.suggest_categorical('epochs', data['max_epochs'])
     learning_rate = trial.suggest_categorical('learning_rate', [float(value) for value in data['learning_rate']])
     batch_size = trial.suggest_categorical('batch_size', data['batch_size'])
+    warmup_ratio = trial.suggest_categorical('warmup_ratio', data['warm_up'])
 
-    file_path = './yaml_files/qqp.yaml'
+    file_path = './yaml_files/sst_2.yaml'
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
     
@@ -27,7 +28,7 @@ def objective(trial):
 
     accuracy = run_experiment(
         model='roberta-base',
-        task='qqp',
+        task='sst2',
         training_type='finetuned',
         epochs=epochs,
         log_to_wandb=True,
@@ -39,6 +40,7 @@ def objective(trial):
         weight_decay=weight_decay,
         betas=betas,
         eps=eps, 
+        warmup_ratio=warmup_ratio,
         project_name='model_hyperparameter_search',
     )
 
@@ -54,7 +56,7 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print(f"{key}: {value}")
 
-    file_name = 'hparams_json_files/qqp-hparams.json'
+    file_name = 'hparams_json_files/sst2-hparams.json'
     open(file_name, 'x')
     with open(file_name, 'w') as file:
         json.dump(trial.params, file, indent=4)

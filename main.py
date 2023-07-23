@@ -268,3 +268,8 @@ def run_experiment (
     wandb.finish()
 
     return test_accuracy
+
+if __name__ == '__main__':
+    import os
+    import sys
+    sys.path.append(os.path.abspath(""))

@@ -3,7 +3,6 @@ import json
 import optuna
 from main import run_experiment
 
-
 def objective(trial):
     file_path = './hparams_yaml_files/small_tasks.yaml'
     with open(file_path, 'r') as file:
