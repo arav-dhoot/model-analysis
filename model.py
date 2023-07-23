@@ -2,6 +2,7 @@ import json
 import tqdm
 import time
 import torch
+import wandb
 import numpy as np
 import torch.nn as nn
 from torch.optim.lr_scheduler import LambdaLR
@@ -113,8 +114,8 @@ class Model(nn.Module):
 
         def lr_lambda(batch):
             if batch < (warmup_ratio * len(dataloader) * epochs):
-                return float(batch) / float(max(1, (warmup_ratio * len(dataloader))))
-            return max(0.0, float(len(dataloader) - batch) / float(max(1, len(dataloader) -  (warmup_ratio * len(dataloader)))))
+                return float(batch) / float(max(1, (warmup_ratio * len(dataloader) * epochs)))
+            return max(0.0, float(len(dataloader) - batch) / float(max(1, len(dataloader) -  (warmup_ratio * len(dataloader) * epochs))))
     
         # TODO: epoch multiplication    
         # TODO: wandb.log(learning_rate)

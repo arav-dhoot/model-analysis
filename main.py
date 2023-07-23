@@ -192,7 +192,7 @@ def run_experiment (
         model = Model(num_classes=mnli_num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
 
-        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(mnli_train_dataloader, optimizer, device, warmup_ratio=0.06)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(mnli_train_dataloader, optimizer, device, 2, warmup_ratio=0.06)
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(mnli_test_dataloader, device)
 
         for epoch in range(2):
@@ -228,7 +228,7 @@ def run_experiment (
     print(f'Learning Rate: {learning_rate} - Total Epochs: {epochs} - Batch Size: {batch_size}')
 
     for epoch in range(epochs):
-        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device, warmup_ratio=warmup_ratio)
+        train_loss, train_accuracy, train_loss_list, train_accuracy_list, train_time_list, train_step_list = model.train_epoch(train_dataloader, optimizer, device, epochs, warmup_ratio=warmup_ratio)
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(test_dataloader, device)
 
         for tr_loss, tr_accuracy, tr_time, tr_step in zip(train_loss_list, train_accuracy_list, train_time_list, train_step_list):
