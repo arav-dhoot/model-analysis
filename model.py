@@ -25,7 +25,6 @@ class Model(nn.Module):
             self.dropout,
             nn.Linear(self.model.config.hidden_size, num_classes)
             )
-        # self.fc = nn.Linear(self.model.config.hidden_size, num_classes)
         self.name_list = [name for name, params in self.model.named_parameters()]
         self.grad_dict = dict()
         for name in self.name_list: self.grad_dict[name] = list()
