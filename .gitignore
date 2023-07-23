@@ -9,3 +9,4 @@ older_files/
 wandb/
 !yaml_files/*.yaml
 !hparams_yaml_files/*.yaml
+**/__init__.py
