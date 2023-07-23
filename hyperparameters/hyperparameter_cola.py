@@ -56,5 +56,6 @@ if __name__ == "__main__":
         print(f"{key}: {value}")
 
     file_name = 'hparams_json_files/cola-hparams.json'
+    open(file_name, 'x')
     with open(file_name, 'w') as file:
         json.dump(trial.params, file, indent=4)
