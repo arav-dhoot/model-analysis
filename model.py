@@ -5,8 +5,10 @@ import torch
 import wandb
 import numpy as np
 import torch.nn as nn
-from torch.optim.lr_scheduler import LambdaLR
+from scipy.stats import pearsonr
 from transformers import AutoModel
+from sklearn.metrics import accuracy_score
+from torch.optim.lr_scheduler import LambdaLR
 
 class Model(nn.Module):
     def __init__(self, 
@@ -116,8 +118,7 @@ class Model(nn.Module):
             if batch < (warmup_ratio * len(dataloader) * epochs):
                 return float(batch) / float(max(1, (warmup_ratio * len(dataloader) * epochs)))
             return max(0.0, float(len(dataloader) - batch) / float(max(1, len(dataloader) -  (warmup_ratio * len(dataloader) * epochs))))
-    
-        # TODO: epoch multiplication    
+  
         # TODO: wandb.log(learning_rate)
 
         scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
@@ -193,8 +194,8 @@ class Model(nn.Module):
                 batch_list.append(batch_count)
                 end_time = time.time()
                 time_list.append(end_time - start_time)
-                
-        accuracy = total_correct / total_predictions
+        if self.task == 'stsb': accuracy = pearsonr([total_correct], [total_predictions])
+        else: accuracy = accuracy_score([total_correct, total_predictions])
 
         return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_list
 
