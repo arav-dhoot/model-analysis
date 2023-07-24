@@ -263,7 +263,7 @@ def run_experiment (
         print(f'Epoch {epoch + 1} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Test Loss: {test_loss:.4f} - Test Accuracy: {test_accuracy:.4f}')
     print(f'{model.trained_proportion * 100}% of the model was trained')
 
-    if training_type == 'finetuned': 
+    if training_type == 'finetuned' and not sweep: 
         file_location = model.file_write()
         wandb.save(file_location)
     wandb.finish()
