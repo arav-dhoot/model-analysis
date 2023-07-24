@@ -179,7 +179,7 @@ def run_experiment (
 
         mnli_dataset = load_dataset('glue', 'mnli')
         mnli_num_classes = 3
-        mnli_batch_size = batch_size
+        mnli_batch_size = 16
 
         mnli_train_data = mnli_dataset['train']
         mnli_test_data = mnli_dataset['validation_matched']
@@ -187,7 +187,7 @@ def run_experiment (
         mnli_test_dataset = MNLIDataset(mnli_test_data, tokenizer)
 
         mnli_train_dataloader = DataLoader(mnli_train_dataset, batch_size=mnli_batch_size, shuffle=True)
-        mnli_test_dataloader = DataLoader(mnli_test_dataset, mnli_batch_size=batch_size, shuffle=False)
+        mnli_test_dataloader = DataLoader(mnli_test_dataset, batch_size=mnli_batch_size, shuffle=False)
 
         model = Model(num_classes=mnli_num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
