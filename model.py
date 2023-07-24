@@ -195,7 +195,7 @@ class Model(nn.Module):
                 end_time = time.time()
                 time_list.append(end_time - start_time)
         if self.task == 'stsb': accuracy = pearsonr([total_correct], [total_predictions])
-        else: accuracy = accuracy_score([total_correct, total_predictions])
+        else: accuracy = accuracy_score([total_correct], [total_predictions])
 
         return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_list
 
