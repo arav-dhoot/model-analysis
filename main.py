@@ -174,7 +174,7 @@ def run_experiment (
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
     wandb.watch(model, log='all')
 
-    if task == 'stsb' or task == 'rte' or task == 'mrpc' and not sweep:
+    if (task == 'stsb' or task == 'rte' or task == 'mrpc') and not sweep:
         import torch.nn as nn
         from dataset.mnlidataset import MNLIDataset
 

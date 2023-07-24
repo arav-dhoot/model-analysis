@@ -42,6 +42,7 @@ def objective(trial):
         eps=eps, 
         warmup_ratio=warmup_ratio,
         project_name='model_hyperparameter_search',
+        sweep=True
     )
 
     return accuracy
