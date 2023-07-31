@@ -57,7 +57,10 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print(f"{key}: {value}")
 
-    file_name = 'hparams_json_files/qnli-hparams.json'
-    open(file_name, 'x')
-    with open(file_name, 'w') as file:
-        json.dump(trial.params, file, indent=4)
+    file_name = 'qnli-hparams.json'
+    try:
+        with open(file_name, 'w') as file:
+            json.dump(trial.params, file, indent=4)
+    except:
+       with open(file_name, 'x') as file:
+            json.dump(trial.params, file, indent=4) 
