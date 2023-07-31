@@ -2,7 +2,7 @@ import yaml
 import json
 import optuna
 from main import run_experiment
-
+import os
 
 def objective(trial):
     file_path = './hparams_yaml_files/small_tasks.yaml'
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print(f"{key}: {value}")
 
-    file_name = '../hparams_json_files/mrpc-hparams.json'
+    file_name = './hparams_json_files/mrpc-hparams.json'
     with open(file_name, 'w') as file:
         json.dump(trial.params, file, indent=4)
         
