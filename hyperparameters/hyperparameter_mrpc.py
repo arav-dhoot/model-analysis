@@ -57,7 +57,7 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print(f"{key}: {value}")
 
-    file_name = './hparams_json_files/mrpc-hparams.json'
+    file_name = '/hparams_json_files/mrpc-hparams.json'
     file = open(file_name, 'x')
     with open(file_name, 'w') as file:
         json.dump(trial.params, file, indent=4)
