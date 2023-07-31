@@ -58,6 +58,9 @@ if __name__ == "__main__":
         print(f"{key}: {value}")
 
     file_name = 'mrpc-hparams.json'
-    with open(file_name, 'x') as file:
-        json.dump(trial.params, file, indent=4)
-        
+    try:
+        with open(file_name, 'x') as file:
+            json.dump(trial.params, file, indent=4)
+    except:
+        with open(file_name, 'w') as file:
+            json.dump(trial.params, file, indent=4)
