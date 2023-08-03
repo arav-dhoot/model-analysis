@@ -1,4 +1,5 @@
 
+import os
 import yaml
 import torch
 import wandb
@@ -11,6 +12,8 @@ from dataset.mnlidataset import MNLIDataset
 def run():
     file_path = 'yaml_files/mnli.yaml'
     save_path = 'mnli_pretrained/'
+    if not os.isdir(file_path):
+        os.mkdir(file_path)
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
 
