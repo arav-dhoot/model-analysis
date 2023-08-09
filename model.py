@@ -7,7 +7,6 @@ import numpy as np
 import torch.nn as nn
 from scipy.stats import pearsonr
 from transformers import AutoModel
-from sklearn.metrics import accuracy_score
 from torch.optim.lr_scheduler import LambdaLR
 
 class Model(nn.Module):
@@ -172,7 +171,7 @@ class Model(nn.Module):
         time_list = list()
         loss_list = list()
         accuracy_list = list()
-        predicted_labels = list()
+        predicted = list()
         actual_labels = list()
         
         with torch.no_grad():
@@ -190,7 +189,7 @@ class Model(nn.Module):
                 loss_list.append(loss.item())
                 _, predicted_labels = torch.max(logits, dim=1)
 
-                predicted_labels.extend(predicted_labels.cpu().numpy().tolist())
+                predicted.extend(predicted_labels.cpu().numpy().tolist())
                 actual_labels.extend(labels.cpu().numpy().tolist())
 
                 total_correct += (predicted_labels == labels).sum().item()
@@ -200,11 +199,14 @@ class Model(nn.Module):
                 batch_list.append(batch_count)
                 end_time = time.time()
                 time_list.append(end_time - start_time)
-        if self.task == 'stsb': accuracy = pearsonr(predicted_labels, actual_labels)
+        if self.task == 'stsb': accuracy = pearsonr(predicted, actual_labels)
         else: accuracy = total_correct / total_predictions
 
         return total_loss / len(dataloader), accuracy, loss_list, accuracy_list, time_list, batch_list
 
+    def save_pretrained(self, file_path):
+        self.model.save_pretrained(file_path)
+    
     def file_write(self):
         file_name = f'{self.task}-data.json'
         try:
