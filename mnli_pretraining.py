@@ -4,7 +4,7 @@ from model import Model
 from datasets import load_dataset
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
-from dataset.mnlidataset import MPRCDataset
+from dataset.mnlidataset import MNLIDataset
 
 def run():
     file_path = 'yaml_files/mnli.yaml'
@@ -33,10 +33,9 @@ def run():
 
     mnli_train_data = mnli_dataset['train']
     mnli_test_data = mnli_dataset['validation']
-    mnli_train_dataset = MPRCDataset(mnli_train_data, tokenizer)
-    mnli_test_dataset = MPRCDataset(mnli_test_data, tokenizer)
+    mnli_train_dataset = MNLIDataset(mnli_train_data, tokenizer)
+    mnli_test_dataset = MNLIDataset(mnli_test_data, tokenizer)
     mnli_train_dataloader = DataLoader(mnli_train_dataset, batch_size=mnli_batch_size, shuffle=True)
-    mnli_test_dataloader = DataLoader(mnli_test_dataset, batch_size=mnli_batch_size, shuffle=False)
 
     model = Model(num_classes=mnli_num_classes, task='mnli', training_type='finetune', dropout=dropout).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr, betas=betas, eps=eps, weight_decay=weight_decay)
