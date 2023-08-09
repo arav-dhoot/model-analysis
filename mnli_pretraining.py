@@ -32,9 +32,7 @@ def run():
     mnli_batch_size = 16
 
     mnli_train_data = mnli_dataset['train']
-    mnli_test_data = mnli_dataset['validation']
     mnli_train_dataset = MNLIDataset(mnli_train_data, tokenizer)
-    mnli_test_dataset = MNLIDataset(mnli_test_data, tokenizer)
     mnli_train_dataloader = DataLoader(mnli_train_dataset, batch_size=mnli_batch_size, shuffle=True)
 
     model = Model(num_classes=mnli_num_classes, task='mnli', training_type='finetune', dropout=dropout).to(device)
