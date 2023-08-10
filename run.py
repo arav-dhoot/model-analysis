@@ -65,8 +65,6 @@ if task == 'rte':
 if task == 'stsb':
     num_classes = 1
 
-num_classes = data['task']['num_classes']
-
 batch_size = hparam_data['batch_size']
 max_tokens = 512
 
