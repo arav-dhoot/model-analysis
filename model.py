@@ -127,6 +127,7 @@ class Model(nn.Module):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['labels'].to(device)
+
             
             optimizer.zero_grad()
             
@@ -140,6 +141,10 @@ class Model(nn.Module):
             total_loss += loss.item()
             loss_list.append(loss.item())
             predicted_labels = torch.argmax(logits, dim=1)
+
+            predicted_labels = predicted_labels.to(torch.int32)
+            labels = labels.to(torch.int32)
+
             total_correct += (predicted_labels == labels).sum().item()  
             accuracy_list.append((predicted_labels == labels).sum().item()/len(labels))
             
