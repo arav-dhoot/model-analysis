@@ -14,14 +14,10 @@ def run():
     with open(file_path, 'r') as file:
         data = yaml.safe_load(file)
 
-    num_classes = data['task']['num_classes']
-    batch_size = data['dataset']['batch_size']
-    max_tokens = data['dataset']['max_tokens']
     weight_decay = data['optimizer']['weight_decay']
     betas = eval(data['optimizer']['adam_betas'])
     eps = float(data['optimizer']['adam_eps'])
     lr = float(data['optimization']['lr'][0])
-    epochs = data['optimization']['max_epoch']
     dropout = data['model']['dropout']
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'mps')

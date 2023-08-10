@@ -1,3 +1,4 @@
+import json
 import yaml
 import argparse
 from main import run_experiment
@@ -26,63 +27,58 @@ task = arguments.task
 log_to_wandb = arguments.log_to_wandb
 
 if task == 'sst2':
-    file_path = 'yaml_files/sst_2.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
     
 if task == 'qqp':
-    file_path = 'yaml_files/qqp.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
     
 if task =='wnli':
-    file_path = 'yaml_files/rte.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
 
 if task == 'cola':
-    file_path = 'yaml_files/cola.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
+
+    hparam_file_path = 'hparams_json_files/cola-hparams.json'
+    with open(hparam_file_path, 'r') as hparam_file:
+        hparam_data = json.load(hparam_file)
 
 if task == 'qnli':
-    file_path = 'yaml_files/qnli.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
 
 if task == 'mnli':
-    file_path = 'yaml_files/mnli.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 3
 
 if task == 'mrpc':
-    file_path = 'yaml_files/mrpc.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
+
+    hparam_file_path = 'hparams_json_files/mrpc-hparams.json'
+    with open(hparam_file_path, 'r') as hparam_file:
+        hparam_data = json.load(hparam_file)
 
 if task == 'rte':
-    file_path = 'yaml_files/rte.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 2
+
+    hparam_file_path = 'hparams_json_files/rte-hparams.json'
+    with open(hparam_file_path, 'r') as hparam_file:
+        hparam_data = json.load(hparam_file)
 
 if task == 'stsb':
-    file_path = 'yaml_files/sts_b.yaml'
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+    num_classes = 1
 
 num_classes = data['task']['num_classes']
 
-batch_size = data['dataset']['batch_size']
-max_tokens = data['dataset']['max_tokens']
+batch_size = hparam_data['batch_size']
+max_tokens = 512
 
-weight_decay = data['optimizer']['weight_decay']
-betas = eval(data['optimizer']['adam_betas'])
-eps = float(data['optimizer']['adam_eps'])
+weight_decay = 0.1
+betas = (0.9,0.98)
+eps = 1e-06
 
-lr = float(data['optimization']['lr'][0])
-epochs = data['optimization']['max_epoch']
+lr = hparam_data['learning_rate']
+epochs = hparam_data['epochs']
 
-dropout = data['model']['dropout']
+dropout = 0.1
+warmup_ratio = hparam_data['warmup_ratio']
 
 if __name__ == "__main__":
     run_experiment(model=model, 
@@ -97,7 +93,8 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps, 
+                   warmup_ratio=warmup_ratio)
     
     run_experiment(model=model, 
                    task=task, 
@@ -111,7 +108,8 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps,
+                   warmup_ratio=warmup_ratio)
     
     run_experiment(model=model, 
                    task=task, 
@@ -125,4 +123,5 @@ if __name__ == "__main__":
                    max_tokens=max_tokens, 
                    weight_decay=weight_decay,
                    betas=betas,
-                   eps=eps)
+                   eps=eps,
+                   warmup_ratio=warmup_ratio)
