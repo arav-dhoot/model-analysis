@@ -78,8 +78,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = QQPDataset(train_data, tokenizer)
-        test_dataset = QQPDataset(test_data, tokenizer)
+        train_dataset = QQPDataset(train_data, tokenizer, max_tokens)
+        test_dataset = QQPDataset(test_data, tokenizer, max_tokens)
 
     if task == 'cola':
         from dataset.coladataset import COLADataset
@@ -90,8 +90,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = COLADataset(train_data, tokenizer)
-        test_dataset = COLADataset(test_data, tokenizer)
+        train_dataset = COLADataset(train_data, tokenizer, max_tokens)
+        test_dataset = COLADataset(test_data, tokenizer, max_tokens)
 
     if task == 'wnli':
         from dataset.wnlidataset import WNLIDataset
@@ -102,8 +102,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = WNLIDataset(train_data, tokenizer)
-        test_dataset = WNLIDataset(test_data, tokenizer)
+        train_dataset = WNLIDataset(train_data, tokenizer, max_tokens)
+        test_dataset = WNLIDataset(test_data, tokenizer, max_tokens)
 
     if task == 'stsb':
         from dataset.stsbdataset import STSBDataset
@@ -114,8 +114,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = STSBDataset(train_data, tokenizer)
-        test_dataset = STSBDataset(test_data, tokenizer)
+        train_dataset = STSBDataset(train_data, tokenizer, max_tokens)
+        test_dataset = STSBDataset(test_data, tokenizer, max_tokens)
 
     if task == 'rte':
         from dataset.rtedataset import RTEDataset
@@ -126,8 +126,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = RTEDataset(train_data, tokenizer)
-        test_dataset = RTEDataset(test_data, tokenizer)
+        train_dataset = RTEDataset(train_data, tokenizer, max_tokens)
+        test_dataset = RTEDataset(test_data, tokenizer, max_tokens)
     
     if task == 'mrpc':
         from dataset.mrpcdataset import MRPCDataset
@@ -138,8 +138,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = MRPCDataset(train_data, tokenizer)
-        test_dataset = MRPCDataset(test_data, tokenizer)
+        train_dataset = MRPCDataset(train_data, tokenizer, max_tokens)
+        test_dataset = MRPCDataset(test_data, tokenizer, max_tokens)
 
     if task == 'qnli':
         from dataset.qnlidataset import QNLIDataset
@@ -150,8 +150,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = QNLIDataset(train_data, tokenizer)
-        test_dataset = QNLIDataset(test_data, tokenizer)
+        train_dataset = QNLIDataset(train_data, tokenizer, max_tokens)
+        test_dataset = QNLIDataset(test_data, tokenizer, max_tokens)
 
     if task == 'mnli':
         from dataset.mnlidataset import MNLIDataset
@@ -162,8 +162,8 @@ def run_experiment (
 
         train_data = dataset['train']
         test_data = dataset['validation_matched']
-        train_dataset = MNLIDataset(train_data, tokenizer)
-        test_dataset = MNLIDataset(test_data, tokenizer)
+        train_dataset = MNLIDataset(train_data, tokenizer, max_tokens)
+        test_dataset = MNLIDataset(test_data, tokenizer, max_tokens)
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
