@@ -211,6 +211,10 @@ class Model(nn.Module):
 
     def save_pretrained(self, file_path):
         self.model.save_pretrained(file_path)
+
+    def from_pretrained(self, file_path):
+        pass
+        # TODO: implementation
     
     def file_write(self):
         file_name = f'{self.task}-data.json'

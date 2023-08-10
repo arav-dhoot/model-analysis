@@ -169,8 +169,10 @@ def run_experiment (
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'mps')
-
-    model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
+    if task == 'rte' or task == 'stsb' or task == 'mrpc':
+        model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout, model='mnli_pretrained/model').to(device)
+    else:
+        model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=betas, eps=eps, weight_decay=weight_decay)
     wandb.watch(model, log='all')
 
@@ -181,24 +183,26 @@ def run_experiment (
         test_loss, test_accuracy, test_loss_list, test_accuracy_list, test_time_list, test_step_list = model.test_epoch(test_dataloader, device)
 
         for tr_loss, tr_accuracy, tr_time, tr_step in zip(train_loss_list, train_accuracy_list, train_time_list, train_step_list):
-            wandb.log(
-                {
-                    'Train Loss':tr_loss,
-                    'Train Accuracy':tr_accuracy,
-                    'Train Time':tr_time,
-                    'Train Step': (epoch * len(train_step_list)) + tr_step
-                }, 
-            )
+            if log_to_wandb: 
+                wandb.log(
+                    {
+                        'Train Loss':tr_loss,
+                        'Train Accuracy':tr_accuracy,
+                        'Train Time':tr_time,
+                        'Train Step': (epoch * len(train_step_list)) + tr_step
+                    }, 
+                )
         
         for te_loss, te_accuracy, te_time, te_step in zip(test_loss_list, test_accuracy_list, test_time_list, test_step_list):
-            wandb.log(
-                {
-                    'Test Loss (batch)':te_loss,
-                    'Test Accuracy (batch)':te_accuracy,
-                    'Test Time':te_time,
-                    'Test Step': (epoch * len(test_step_list)) + te_step 
-                },   
-            )
+            if log_to_wandb: 
+                wandb.log(
+                    {
+                        'Test Loss (batch)':te_loss,
+                        'Test Accuracy (batch)':te_accuracy,
+                        'Test Time':te_time,
+                        'Test Step': (epoch * len(test_step_list)) + te_step 
+                    },   
+                )
 
         wandb.log(
             {
