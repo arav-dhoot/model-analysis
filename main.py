@@ -2,6 +2,7 @@ import time
 import torch
 import wandb
 import random
+import warnings
 from model import Model
 from datasets import load_dataset
 from transformers import AutoTokenizer
@@ -25,6 +26,8 @@ def run_experiment (
         project_name='model_analysis',
         sweep=False,
 ):
+
+    warnings.filterwarnings('ignore')
 
     tokenizer = AutoTokenizer.from_pretrained(model)
     task = task
