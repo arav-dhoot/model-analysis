@@ -26,44 +26,39 @@ model = arguments.model
 task = arguments.task
 log_to_wandb = arguments.log_to_wandb
 
-if task == 'sst2':
-    num_classes = 2
+if task == 'sst2': pass
     
-if task == 'qqp':
-    num_classes = 2
+if task == 'qqp': pass
     
-if task =='wnli':
-    num_classes = 2
+if task =='wnli': pass
 
 if task == 'cola':
-    num_classes = 2
-
     hparam_file_path = 'hparams_json_files/cola-hparams.json'
     with open(hparam_file_path, 'r') as hparam_file:
         hparam_data = json.load(hparam_file)
 
-if task == 'qnli':
-    num_classes = 2
+if task == 'qnli': pass
 
-if task == 'mnli':
-    num_classes = 3
+if task == 'mnli': pass
 
 if task == 'mrpc':
-    num_classes = 2
-
     hparam_file_path = 'hparams_json_files/mrpc-hparams.json'
     with open(hparam_file_path, 'r') as hparam_file:
         hparam_data = json.load(hparam_file)
 
 if task == 'rte':
-    num_classes = 2
-
     hparam_file_path = 'hparams_json_files/rte-hparams.json'
     with open(hparam_file_path, 'r') as hparam_file:
         hparam_data = json.load(hparam_file)
 
+if task == 'stsb': pass
+
 if task == 'stsb':
     num_classes = 1
+if task == 'mnli':
+    num_classes = 3
+else: 
+    num_classes = 2
 
 batch_size = hparam_data['batch_size']
 max_tokens = 512
