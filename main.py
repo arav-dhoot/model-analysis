@@ -65,12 +65,11 @@ def run_experiment (
         dataset = load_dataset('glue', 'sst2')
         num_classes = num_classes
         batch_size = batch_size
-        max_tokens = max_tokens
 
         train_data = dataset['train']
         test_data = dataset['validation']
-        train_dataset = SST2Dataset(train_data, tokenizer)
-        test_dataset = SST2Dataset(test_data, tokenizer)
+        train_dataset = SST2Dataset(train_data, tokenizer, max_tokens)
+        test_dataset = SST2Dataset(test_data, tokenizer, max_tokens)
 
     if task == 'qqp':
         from dataset.qqpdataset import QQPDataset

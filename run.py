@@ -53,23 +53,17 @@ if task == 'rte':
 
 if task == 'stsb': pass
 
-if task == 'stsb':
-    num_classes = 1
-if task == 'mnli':
-    num_classes = 3
-else: 
-    num_classes = 2
+if task == 'stsb': num_classes = 1
+if task == 'mnli': num_classes = 3
+else: num_classes = 2
 
 batch_size = hparam_data['batch_size']
 max_tokens = 512
-
 weight_decay = 0.1
 betas = (0.9,0.98)
 eps = 1e-06
-
 lr = hparam_data['learning_rate']
 epochs = hparam_data['epochs']
-
 dropout = 0.1
 warmup_ratio = hparam_data['warmup_ratio']
 
