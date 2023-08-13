@@ -171,7 +171,7 @@ def run_experiment (
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'mps')
-    if task == 'rte' or task == 'stsb':
+    if task == 'rte' or task == 'stsb' or task == 'mrpc':
         model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout, model='mnli_pretrained/model').to(device)
     else:
         model = Model(num_classes=num_classes, task=task, training_type=training_type, dropout=dropout).to(device)
