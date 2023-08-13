@@ -26,46 +26,62 @@ model = arguments.model
 task = arguments.task
 log_to_wandb = arguments.log_to_wandb
 
-if task == 'sst2': pass
+if task == 'sst2':
+    file_path = 'yaml_files/sst_2.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
     
-if task == 'qqp': pass
+if task == 'qqp':
+    file_path = 'yaml_files/qqp.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
     
-if task =='wnli': pass
+if task =='wnli':
+    file_path = 'yaml_files/rte.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
 if task == 'cola':
-    hparam_file_path = 'hparams_json_files/cola-hparams.json'
-    with open(hparam_file_path, 'r') as hparam_file:
-        hparam_data = json.load(hparam_file)
+    file_path = 'yaml_files/cola.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
-if task == 'qnli': pass
+if task == 'qnli':
+    file_path = 'yaml_files/qnli.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
-if task == 'mnli': pass
+if task == 'mnli':
+    file_path = 'yaml_files/mnli.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
 if task == 'mrpc':
-    hparam_file_path = 'hparams_json_files/mrpc-hparams.json'
-    with open(hparam_file_path, 'r') as hparam_file:
-        hparam_data = json.load(hparam_file)
+    file_path = 'yaml_files/mrpc.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
 if task == 'rte':
-    hparam_file_path = 'hparams_json_files/rte-hparams.json'
-    with open(hparam_file_path, 'r') as hparam_file:
-        hparam_data = json.load(hparam_file)
+    file_path = 'yaml_files/rte.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
-if task == 'stsb': pass
+if task == 'stsb':
+    file_path = 'yaml_files/sts_b.yaml'
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
 
-if task == 'stsb': num_classes = 1
-if task == 'mnli': num_classes = 3
-else: num_classes = 2
+num_classes = data['task']['num_classes']
+batch_size = data['dataset']['batch_size']
+weight_decay = data['optimizer']['weight_decay']
+betas = eval(data['optimizer']['adam_betas'])
+eps = float(data['optimizer']['adam_eps'])
+lr = float(data['optimization']['lr'][0])
+epochs = data['optimization']['max_epoch']
+dropout = data['model']['dropout']
 
-batch_size = hparam_data['batch_size']
-max_tokens = 512
-weight_decay = 0.1
-betas = (0.9,0.98)
-eps = 1e-06
-lr = hparam_data['learning_rate']
-epochs = hparam_data['epochs']
-dropout = 0.1
-warmup_ratio = hparam_data['warmup_ratio']
+max_tokens = 4400
+warmup_ratio = 0.1
 
 if __name__ == "__main__":
     run_experiment(model=model, 
