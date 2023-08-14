@@ -80,7 +80,7 @@ lr = float(data['optimization']['lr'][0])
 epochs = data['optimization']['max_epoch']
 dropout = data['model']['dropout']
 
-max_tokens = 4400
+max_tokens = 512
 warmup_ratio = 0.1
 
 if __name__ == "__main__":
